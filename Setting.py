@@ -59,6 +59,12 @@ class SettingWindow(QDialog, Ui_Dialog):
         if self.user_label.text() == "":
             messagebox(self, QMessageBox.Critical, "错误!", "用户名称不得为空!")
             return False
+        # 检测是否更改了用户名,用于更改头像文件
+        user_name = self.config_dict["user_name"]
+        old_head_path = user_name + ".jpg"
+        if self.user_edit.text() != user_name:
+            new_head_path = self.user_edit.text() + ".jpg"
+            os.rename(old_head_path, new_head_path)
         # 写入
         for key, label in self.labels_dict.items():
             self.config_obj.save_config(key, label.text())

@@ -1,5 +1,6 @@
 # cfw
-# 2022.6.21
+# 2022.6.22
+# 需要修复currentItemChanged产生的信号嵌套触发问题
 
 import os
 import sys
@@ -47,15 +48,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.gamelist_widget.addItem(item)
         self.gamelist_widget.setCurrentRow(0)
 
-    def load_game_data(self, item: QListWidgetItem):
+    def load_game_data(self, item: QListWidgetItem = None):
         if item is None:
             selcet_item = self.gamelist_widget.selectedItems()[0]
             key_value = selcet_item.text()
         else:
             key_value = item.text()
         game_info = self.game_data_obj.get_game_data(key_value)
-        print(key_value)
-        print(game_info)
         # 显示游戏译名
         self.game_name = game_info["nick_name"]
         self.gamename_label.setText(self.game_name)
@@ -88,6 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setPalette(pale)
 
     def scan_game(self):
+        # 批量扫描游戏
         scan_game_path = QFileDialog.getExistingDirectory(self, "请选择需要扫描的文件夹...")
         scan_game_path = os.path.normpath(scan_game_path)
         if scan_game_path == ".":
@@ -98,9 +98,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if len(exe_path_list) == 1:
                 exe_path = exe_path_list[0]
             else:
-                exe_path = "game exe not found."
+                exe_path = "N\A"
             game_info_dict = {
-                "game_name": i.name,
                 "nick_name": i.name,
                 "game_path": i.path,
                 "exe_path": exe_path,
@@ -108,13 +107,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "last_time": "N\A",
                 "total_time": "N\A",
                 "ps": "",
+                "run_args": "",
+                "enable_sync": False,
+                "ncd_path": "N\A",
             }
-            print(i.name)
-            print(game_info_dict)
             self.game_data_obj.create_game(i.name, game_info_dict)
         self.load_game()
 
     def play_game(self):
+        # 运行游戏
         if os.path.exists(self.exe_path):
             os.startfile(self.exe_path)
             self.edit_last_runtime()
@@ -122,25 +123,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             messagebox(self, QMessageBox.Critical, "错误！", "未找到游戏文件，请检查该游戏属性！")
 
     def edit_last_runtime(self):
+        # 计算最后运行时间
         selcet_item = self.gamelist_widget.selectedItems()[0]
         game_name = selcet_item.text()
         now_time = time.localtime()
         format_time = time.strftime("%Y-%m-%d %H:%M", now_time)
         self.game_data_obj.save_game_data(game_name, "last_time", format_time)
-        print(format_time)
 
     def setting(self):
+        # 打开设置窗口
         setting_win = SettingWindow(self.config_obj)
         setting_win.exec()
 
     def attributes(self, item):
-        key_value = item.text()
+        # 打开属性窗口
+        game_name = item.text()
         attributes_win = AttributesWindow(
-            self.config_obj, self.game_data_obj, key_value
+            self.config_obj, self.game_data_obj, game_name
         )
         attributes_win.exec()
         self.load_game()
-        self.load_game_data(None)
+        self.load_game_data()
 
 
 if __name__ == "__main__":

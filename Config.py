@@ -17,7 +17,7 @@ class Config:
         if key in self.confdata_dict:
             self.confdata_dict[key] = value
         with open(self.conf_filepath, "w", encoding="utf-8") as f:
-            self.confdata_dict: dict = json.load(f)
+            json.dump(self.confdata_dict, f, ensure_ascii=False)
 
 
 class GameData:

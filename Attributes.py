@@ -1,5 +1,5 @@
 # cfw
-# 2022.6.21
+# 2022.6.22
 
 import os
 
@@ -35,14 +35,16 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.apply_btn.clicked.connect(self.apply_fun)
 
     def create_dict(self):
-        self.labels_dict = {
+        self.line_edit_dict = {
             "nick_name": self.nick_name_edit,
             "game_path": self.game_folder_edit,
             "exe_path": self.exe_path_edit,
             "savedata_path": self.savedata_edit,
+            "ps": self.ps_edit,
+        }
+        self.labels_dict = {
             "last_time": self.last_run_label,
             "total_time": self.total_time_label,
-            "ps": self.ps_edit,
         }
 
     def load_game_data(self):
@@ -51,8 +53,11 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.game_name_label.setText(self.game_name)
         self.game_name_edit.setText(self.game_name)
         # 显示其余信息
-        for key, widget in self.labels_dict.items():
-            widget.setText(self.game_info[key])
+        for key1, widget1 in self.labels_dict.items():
+            widget1.setText(self.game_info[key1])
+        for key2, widget2 in self.line_edit_dict.items():
+            widget2.setText(self.game_info[key2])
+            widget2.setCursorPosition(0)
 
     def open_folder(self):
         folder_path = self.game_info["game_path"]
@@ -74,13 +79,13 @@ class AttributesWindow(QDialog, Ui_Dialog):
             new_exe_path = new_exe_path
             self.exe_path_edit.setText(new_exe_path)
         # 选择游戏存档文件夹
-        new_save_path = QFileDialog.getExistingDirectory(
-            self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
-        )
-        new_save_path = os.path.normpath(new_save_path)
-        if new_save_path != ".":
-            new_save_path = new_save_path
-            self.savedata_edit.setText(new_save_path)
+        # new_save_path = QFileDialog.getExistingDirectory(
+        #     self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
+        # )
+        # new_save_path = os.path.normpath(new_save_path)
+        # if new_save_path != ".":
+        #     new_save_path = new_save_path
+        #     self.savedata_edit.setText(new_save_path)
 
     def change_icon(self):
         pass
@@ -117,6 +122,8 @@ class AttributesWindow(QDialog, Ui_Dialog):
             return False
         # 写入数据
         for key, widget in self.labels_dict.items():
+            self.game_data_obj.save_game_data(self.game_name, key, widget.text())
+        for key, widget in self.line_edit_dict.items():
             self.game_data_obj.save_game_data(self.game_name, key, widget.text())
         # 更改游戏名称
         if self.game_name_edit.text() != self.game_name:

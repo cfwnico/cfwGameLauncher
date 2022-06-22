@@ -7,6 +7,8 @@
         "last_time": "2022-06-20 23:02",
         "total_time": "total_time",
         "ps": "",
-        "run_args": ""
+        "run_args": "",
+        "enable_sync": false,
+        "ncd_path": "ncd_savedata_path"
     }
 }
