@@ -11,6 +11,7 @@ from PySide6.QtWidgets import *
 from Common import messagebox
 from Config import Config, GameData
 from ui_AttributesW import Ui_Dialog
+from SaveDataSync import SaveDataSync
 
 
 class AttributesWindow(QDialog, Ui_Dialog):
@@ -18,21 +19,30 @@ class AttributesWindow(QDialog, Ui_Dialog):
         super().__init__()
         self.setupUi(self)
         self.setup_connect()
+        self.config_obj = config
         self.game_data_obj = game_data
         self.game_name = game_name
         self.create_dict()
         self.load_game_data()
+        self.load_sync_info()
 
     def setup_connect(self):
+        # 公共按钮
+        self.ok_btn.clicked.connect(self.ok_fun)
+        self.cancel_btn.clicked.connect(self.cancel_fun)
+        self.apply_btn.clicked.connect(self.apply_fun)
+        # 常规选项卡
         self.open_folder_btn.clicked.connect(self.open_folder)
         self.change_path_btn.clicked.connect(self.change_path)
         self.change_icon_btn.clicked.connect(self.change_icon)
         self.change_bg_btn.clicked.connect(self.change_bg)
         self.edit_metadata_btn.clicked.connect(self.edit_metadata)
         self.edit_txt_btn.clicked.connect(self.edit_txt)
-        self.ok_btn.clicked.connect(self.ok_fun)
-        self.cancel_btn.clicked.connect(self.cancel_fun)
-        self.apply_btn.clicked.connect(self.apply_fun)
+        # 存档云同步选项卡
+        self.use_ncd_checkbox
+        self.open_savedata_btn
+        self.change_savedata_btn
+        self.fix_ncd_btn
 
     def create_dict(self):
         self.line_edit_dict = {
@@ -58,6 +68,10 @@ class AttributesWindow(QDialog, Ui_Dialog):
         for key2, widget2 in self.line_edit_dict.items():
             widget2.setText(self.game_info[key2])
             widget2.setCursorPosition(0)
+
+    def load_sync_info(self):
+        ncd_path = self.config_obj.confdata_dict["ncd_path"]
+        save_sync_obj = SaveDataSync(ncd_path)
 
     def open_folder(self):
         folder_path = self.game_info["game_path"]

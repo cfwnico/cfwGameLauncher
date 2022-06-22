@@ -69,7 +69,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="normal_tab">
+     <widget class="QWidget" name="norm_tab">
       <attribute name="title">
        <string>常规</string>
       </attribute>
@@ -278,7 +278,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="ncd_tab">
       <attribute name="title">
        <string>存档云同步</string>
       </attribute>
@@ -393,7 +393,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="adva_tab">
       <attribute name="title">
        <string>高级</string>
       </attribute>

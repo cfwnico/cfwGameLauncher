@@ -3,6 +3,7 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
+import os
 
 
 def messagebox(parent, icon: QIcon, title: str, text: str, button="yes", buttons=None):
@@ -42,3 +43,31 @@ def messagebox(parent, icon: QIcon, title: str, text: str, button="yes", buttons
                 msgbox.addButton(i, buttons[i])
     replay = msgbox.exec()
     return replay
+
+
+def path_is_symlink(path: str):
+    """[ 该函数判断一个文件夹路径是否为符号链接 ]
+
+    参数:
+        path (str): [ 路径 ]
+
+    返回:
+        True:是符号链接.
+        False:不是符号链接.
+        None:该路径不存在;该路径指向一个文件.
+    """
+    if os.path.exists(path):
+        path_dirname = os.path.dirname(path)
+        folder_name = os.path.basename(path)
+        scan_list = os.scandir(path_dirname)
+        for i in scan_list:
+            if i.name == folder_name:
+                if i.is_dir():
+                    if i.is_symlink():
+                        return True
+                    else:
+                        return False
+                else:
+                    return None
+    else:
+        return None
