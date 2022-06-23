@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AttributesWQUtsqb.ui'
+## Form generated from reading UI file 'AttributesWMwZFeH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -263,6 +263,7 @@ class Ui_Dialog(object):
 
         self.sync_savepath_label = QLabel(self.ncd_tab)
         self.sync_savepath_label.setObjectName(u"sync_savepath_label")
+        self.sync_savepath_label.setWordWrap(True)
 
         self.gridLayout_3.addWidget(self.sync_savepath_label, 3, 1, 1, 1)
 
@@ -275,11 +276,6 @@ class Ui_Dialog(object):
         self.label_5.setObjectName(u"label_5")
 
         self.gridLayout_3.addWidget(self.label_5, 2, 0, 1, 1)
-
-        self.savedata_edit = QLineEdit(self.ncd_tab)
-        self.savedata_edit.setObjectName(u"savedata_edit")
-
-        self.gridLayout_3.addWidget(self.savedata_edit, 2, 1, 1, 1)
 
         self.label_12 = QLabel(self.ncd_tab)
         self.label_12.setObjectName(u"label_12")
@@ -305,6 +301,17 @@ class Ui_Dialog(object):
 
 
         self.gridLayout_3.addLayout(self.horizontalLayout_2, 6, 0, 1, 2)
+
+        self.savedata_label = QLabel(self.ncd_tab)
+        self.savedata_label.setObjectName(u"savedata_label")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.savedata_label.sizePolicy().hasHeightForWidth())
+        self.savedata_label.setSizePolicy(sizePolicy)
+        self.savedata_label.setWordWrap(True)
+
+        self.gridLayout_3.addWidget(self.savedata_label, 2, 1, 1, 1)
 
 
         self.gridLayout_4.addLayout(self.gridLayout_3, 0, 0, 1, 1)
@@ -387,6 +394,7 @@ class Ui_Dialog(object):
         self.open_savedata_btn.setText(QCoreApplication.translate("Dialog", u"\u6253\u5f00\u5b58\u6863\u76ee\u5f55", None))
         self.change_savedata_btn.setText(QCoreApplication.translate("Dialog", u"\u66f4\u6539\u672c\u5730\u5b58\u6863\u8def\u5f84", None))
         self.fix_ncd_btn.setText(QCoreApplication.translate("Dialog", u"\u4fee\u590d\u4e91\u540c\u6b65\u8fde\u63a5", None))
+        self.savedata_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.ncd_tab), QCoreApplication.translate("Dialog", u"\u5b58\u6863\u4e91\u540c\u6b65", None))
         self.label_9.setText(QCoreApplication.translate("Dialog", u"\u8fd0\u884c\u53c2\u6570:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.adva_tab), QCoreApplication.translate("Dialog", u"\u9ad8\u7ea7", None))

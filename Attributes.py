@@ -11,7 +11,7 @@ from PySide6.QtWidgets import *
 from Common import messagebox
 from Config import Config, GameData
 from ui.ui_AttributesW import Ui_Dialog
-from SavedataSync import SaveDataSync
+from SavedataSync import *
 
 
 class AttributesWindow(QDialog, Ui_Dialog):
@@ -39,7 +39,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.edit_metadata_btn.clicked.connect(self.edit_metadata)
         self.edit_txt_btn.clicked.connect(self.edit_txt)
         # 存档云同步选项卡
-        self.use_ncd_checkbox
+
         self.open_savedata_btn
         self.change_savedata_btn
         self.fix_ncd_btn
@@ -49,12 +49,17 @@ class AttributesWindow(QDialog, Ui_Dialog):
             "nick_name": self.nick_name_edit,
             "game_path": self.game_folder_edit,
             "exe_path": self.exe_path_edit,
-            "savedata_path": self.savedata_edit,
             "ps": self.ps_edit,
         }
         self.labels_dict = {
             "last_time": self.last_run_label,
             "total_time": self.total_time_label,
+            "savedata_path": self.savedata_label,
+        }
+        self.sync_dict = {
+            "status": self.sync_status_label,
+            "ncd_savepath": self.sync_savepath_label,
+            "time": self.save_date_label,
         }
 
     def load_game_data(self):
@@ -68,10 +73,24 @@ class AttributesWindow(QDialog, Ui_Dialog):
         for key2, widget2 in self.line_edit_dict.items():
             widget2.setText(self.game_info[key2])
             widget2.setCursorPosition(0)
+        self.use_ncd_checkbox.setChecked(self.game_info["enable_sync"])
+        self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
 
     def load_sync_info(self):
         ncd_path = self.config_obj.confdata_dict["ncd_path"]
-        save_sync_obj = SaveDataSync(ncd_path)
+        save_folder_base_name = os.path.basename(self.game_info["savedata_path"])
+        ncd_savepath = os.path.join(ncd_path, self.game_name, save_folder_base_name)
+        local_savepath = self.game_info["savedata_path"]
+        if self.game_info["enable_sync"]:
+            result = check_sync_status(ncd_savepath, local_savepath)
+            print(result)
+            if result is None:
+                self.sync_status_label.setText("路径设置错误")
+            if result is False:
+                self.sync_status_label.setText("未进行同步连接")
+            if isinstance(result, dict):
+                for key, widget in self.sync_dict.items():
+                    widget.setText(result[key])
 
     def open_folder(self):
         folder_path = self.game_info["game_path"]
@@ -158,16 +177,16 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.game_data_obj.create_game(new_name, old_game_data_dict)
         # 确定路径
         src_bg_path = os.path.join("image", old_name + ".jpg")
-        tag_bg_path = os.path.join("image", new_name + ".jpg")
+        dst_bg_path = os.path.join("image", new_name + ".jpg")
         src_path = os.path.join("metadata", old_name + ".txt")
-        tag_path = os.path.join("metadata", new_name + ".txt")
+        dst_path = os.path.join("metadata", new_name + ".txt")
         src_txt_path = os.path.join("metadata", old_name + "_txt.txt")
-        tag_txt_path = os.path.join("metadata", new_name + "_txt.txt")
+        dst_txt_path = os.path.join("metadata", new_name + "_txt.txt")
         # 创建对应的dict
         rename_dict = {
-            src_bg_path: tag_bg_path,
-            src_path: tag_path,
-            src_txt_path: tag_txt_path,
+            src_bg_path: dst_bg_path,
+            src_path: dst_path,
+            src_txt_path: dst_txt_path,
         }
         # 检查路径
         for src, tag in rename_dict.items():
@@ -176,6 +195,13 @@ class AttributesWindow(QDialog, Ui_Dialog):
             if os.path.exists(src):
                 os.rename(src, tag)
         return True
+
+    def use_ncd(self, checkbox_stats: int):
+        if checkbox_stats == 0:
+            print("关闭同步连接，询问是否删除云端存档")
+        elif checkbox_stats == 2:
+            print("打开同步连接，进入创建流程")
+        print(checkbox_stats)
 
     def ok_fun(self):
         if self.save_game_data():

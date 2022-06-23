@@ -1,45 +1,68 @@
 # cfw
 # 2022.6.22
 
+import os
+
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from Common import messagebox, path_is_symlink
+from Common import get_edit_time, messagebox, path_is_symlink
 from Config import Config, GameData
 
 
-class SaveDataSync:
-    def __init__(self, ncd_path: str) -> None:
-        self.ncd_path = ncd_path
+def check_sync_status(ncd_savepath: str, local_savepath: str):
+    """[ 该函数检查云同步状态并返回相关结果 ]
 
-    def check_sync_status(self, savedata_path: str):
-        """[ 该函数检查云同步状态并返回相关结果 ]
+    参数:
+        path (str): [ 路径 ]
 
-        参数:
-            path (str): [ 路径 ]
+    返回:
+        True:.
+        False:本地存档未启用云同步.
+        None:本地存档路径错误.
+    """
+    # 本地与云端路径相同->错误的路径设置
+    if ncd_savepath == local_savepath:
+        return None
+    result = path_is_symlink(local_savepath)
+    # 本地存档路径是符号链接->可能已同步
+    if result is True:
+        print("本地存档路径是符号链接->可能已同步")
+        # 进一步追踪符号连接
+        print("进一步追踪符号连接")
+        real_local_savepath = os.path.realpath(local_savepath)
+        print("real path:" + real_local_savepath)
+        if real_local_savepath == ncd_savepath:
+            info = get_savedata_info(real_local_savepath)
+            return info
+    # 本地存档路径不是符号链接->未同步
+    elif result is False:
+        print("本地存档路径不是符号链接->未同步")
+        return False
+    # 本地存档路径不存在或指向一个文件->错误的路径设置
+    elif result is None:
+        print("本地存档路径不存在或指向一个文件->错误的路径设置")
+        return None
 
-        返回:
-            True:是符号链接.
-            False:本地存档未启用云同步.
-            None:本地存档路径错误.
-        """
-        result = path_is_symlink(savedata_path)
-        # 本地存档路径是符号链接->可能已同步
-        if result is True:
-            pass
-        # 本地存档路径不是符号链接->未同步
-        elif result is False:
-            return False
-        # 本地存档路径不存在或指向一个文件->错误的路径设置
-        elif result is None:
-            return None
 
-    def create_sync(self):
-        pass
+def get_savedata_info(savedata_path: str):
+    edit_time = get_edit_time(savedata_path)
+    info = {"status": "已同步", "time": edit_time, "ncd_savepath": savedata_path}
+    return info
 
-    def del_sync(self):
-        pass
 
-    def fix_sync(self):
-        pass
+def create_sync(ncd_savepath: str, local_savepath: str):
+    pass
+
+
+def del_sync(ncd_savepath: str, local_savepath: str):
+    pass
+
+
+def fix_sync(ncd_savepath: str, local_savepath: str):
+    pass
+
+
+def change_name_sync(ncd_savepath: str, local_savepath: str):
+    pass

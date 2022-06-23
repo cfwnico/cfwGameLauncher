@@ -1,6 +1,5 @@
 # cfw
 # 2022.6.23
-# 需要修复currentItemChanged产生的信号嵌套触发问题
 
 import os
 import sys
@@ -142,8 +141,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.config_obj, self.game_data_obj, game_name
         )
         attributes_win.exec()
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
         self.load_game()
         self.load_game_data()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
 
 
 if __name__ == "__main__":

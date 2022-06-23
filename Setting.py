@@ -82,15 +82,15 @@ class SettingWindow(QDialog, Ui_Dialog):
             new_head_path = os.path.join("userdata", new_head_filename)
             os.rename(old_head_path, new_head_path)
         # 检测路径是否存在
-        check_path_dict = {
-            self.folder_path_edit: "游戏库目录",
-            self.ncd_folder_edit: "云端存档文件夹",
-        }
-        for widget, name in check_path_dict.items():
-            path = widget.text()
-            if not os.path.exists(path):
-                messagebox(self, QMessageBox.Critical, "错误!", f"{name}路径不存在,请设置正确路径!")
-                return False
+        # check_path_dict = {
+        #     self.folder_path_edit: "游戏库目录",
+        #     self.ncd_folder_edit: "云端存档文件夹",
+        # }
+        # for widget, name in check_path_dict.items():
+        #     path = widget.text()
+        #     if not os.path.exists(path):
+        #         messagebox(self, QMessageBox.Critical, "错误!", f"{name}路径不存在,请设置正确路径!")
+        #         return False
         # 写入
         for key, label in self.labels_dict.items():
             self.config_obj.save_config(key, label.text())

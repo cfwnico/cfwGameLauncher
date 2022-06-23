@@ -4,6 +4,8 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 import os
+from glob import glob
+from time import localtime, strftime
 
 
 def messagebox(parent, icon: QIcon, title: str, text: str, button="yes", buttons=None):
@@ -52,22 +54,40 @@ def path_is_symlink(path: str):
         path (str): [ 路径 ]
 
     返回:
-        True:是符号链接.
-        False:不是符号链接.
-        None:该路径不存在;该路径指向一个文件.
+        True: 是符号链接.
+        False: 不是符号链接.
+        None: 该路径不存在;该路径指向一个文件.
     """
-    if os.path.exists(path):
-        path_dirname = os.path.dirname(path)
-        folder_name = os.path.basename(path)
-        scan_list = os.scandir(path_dirname)
-        for i in scan_list:
-            if i.name == folder_name:
-                if i.is_dir():
-                    if i.is_symlink():
-                        return True
-                    else:
-                        return False
-                else:
-                    return None
-    else:
+    if not os.path.exists(path):
         return None
+    if os.path.isfile(path):
+        return None
+    if os.path.islink(path):
+        return True
+    else:
+        return False
+
+
+def get_edit_time(path: str):
+    """[ 该函数返回路径下所有文件中最新的修改时间 ]
+
+    参数:
+        path (str): [ 路径 ]
+
+    返回:str
+        str: 获取最新修改日期失败!
+        str: %Y年%m月%d日 %H:%M:%S
+    """
+    time_list = []
+    glob_path = os.path.join(path, "*.*")
+    file_list = glob(glob_path)
+    for i in file_list:
+        time = os.path.getmtime(i)
+        time_list.append(time)
+    if len(time_list) > 0:
+        edit_time = max(time_list)
+        edit_time_locale = localtime(edit_time)
+        fromat_time = strftime("%Y年%m月%d日 %H:%M:%S", edit_time_locale)
+    else:
+        fromat_time = "获取最新修改日期失败！"
+    return fromat_time
