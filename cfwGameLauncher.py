@@ -1,5 +1,5 @@
 # cfw
-# 2022.6.22
+# 2022.6.23
 # 需要修复currentItemChanged产生的信号嵌套触发问题
 
 import os
@@ -15,7 +15,7 @@ from Attributes import AttributesWindow
 from Common import messagebox
 from Config import Config, GameData
 from Setting import SettingWindow
-from ui_MainW import Ui_MainWindow
+from ui.ui_MainW import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -148,8 +148,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    config = Config("config.json")
-    gamedata = GameData("gamedata.json")
+    config = Config("userdata\config.json")
+    gamedata = GameData("userdata\gamedata.json")
     main_window = MainWindow(config, gamedata)
     main_window.show()
     app.exec()

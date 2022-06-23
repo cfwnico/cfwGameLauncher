@@ -1,5 +1,5 @@
 # cfw
-# 2022.6.22
+# 2022.6.23
 
 import os
 from PySide6.QtCore import *
@@ -7,7 +7,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
 from Config import Config
-from ui_SettingW import Ui_Dialog
+from ui.ui_SettingW import Ui_Dialog
 from PIL import Image
 from Common import messagebox
 
@@ -50,7 +50,8 @@ class SettingWindow(QDialog, Ui_Dialog):
 
     def load_setting(self):
         user_name = self.config_dict["user_name"]
-        head_path = user_name + ".jpg"
+        head_filename = user_name + ".jpg"
+        head_path = os.path.join("userdata", head_filename)
         # 载入labels,linedit
         for key, labels in self.labels_dict.items():
             labels.setText(self.config_dict[key])
@@ -74,9 +75,11 @@ class SettingWindow(QDialog, Ui_Dialog):
             return False
         # 检测是否更改了用户名,用于更改头像文件
         user_name = self.config_dict["user_name"]
-        old_head_path = user_name + ".jpg"
+        old_head_filename = user_name + ".jpg"
+        old_head_path = os.path.join("userdata", old_head_filename)
         if self.user_edit.text() != user_name:
-            new_head_path = self.user_edit.text() + ".jpg"
+            new_head_filename = self.user_edit.text() + ".jpg"
+            new_head_path = os.path.join("userdata", new_head_filename)
             os.rename(old_head_path, new_head_path)
         # 检测路径是否存在
         check_path_dict = {
@@ -104,7 +107,8 @@ class SettingWindow(QDialog, Ui_Dialog):
             return
         head_image = Image.open(new_head_path)
         proc_image = head_image.resize((150, 150), Image.ANTIALIAS)
-        save_path = self.config_dict["user_name"] + ".jpg"
+        save_name = self.config_dict["user_name"] + ".jpg"
+        save_path = os.path.join("userdata", save_name)
         proc_image.save(save_path)
         self.load_setting()
 

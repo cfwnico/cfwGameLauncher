@@ -10,7 +10,7 @@ from PySide6.QtWidgets import *
 
 from Common import messagebox
 from Config import Config, GameData
-from ui_AttributesW import Ui_Dialog
+from ui.ui_AttributesW import Ui_Dialog
 from SavedataSync import SaveDataSync
 
 
