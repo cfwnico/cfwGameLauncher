@@ -11,7 +11,7 @@ from PySide6.QtWidgets import *
 from Common import messagebox
 from Config import Config, GameData
 from ui_AttributesW import Ui_Dialog
-from SaveDataSync import SaveDataSync
+from SavedataSync import SaveDataSync
 
 
 class AttributesWindow(QDialog, Ui_Dialog):
