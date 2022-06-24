@@ -7,8 +7,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from Common import get_edit_time, messagebox, path_is_symlink
-from Config import Config, GameData
+from Common import get_edit_time, path_is_symlink
 
 
 def check_sync_status(ncd_savepath: str, local_savepath: str):
@@ -18,7 +17,7 @@ def check_sync_status(ncd_savepath: str, local_savepath: str):
         path (str): [ 路径 ]
 
     返回:
-        True:.
+        dict:{"status": 云同步状态, "time": 云存档最新修改时间, "ncd_savepath": 云存档路径}.
         False:本地存档未启用云同步.
         None:本地存档路径错误.
     """

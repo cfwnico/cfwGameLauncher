@@ -18,14 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="home_btn">
-        <property name="text">
-         <string>主页</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="add_game_btn">
         <property name="text">
          <string>添加游戏</string>
         </property>
@@ -39,20 +32,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="text">
-         <string>PushButton</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="text">
-         <string>删除游戏</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="setting_btn">
         <property name="text">
          <string>设置</string>
@@ -60,11 +39,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="about_btn">
-        <property name="text">
-         <string>关于</string>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -92,7 +77,7 @@ border-color: rgba(255, 255, 255, 128);</string>
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="4" column="6" rowspan="2">
+         <item row="4" column="5" rowspan="2">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -105,7 +90,19 @@ border-color: rgba(255, 255, 255, 128);</string>
            </property>
           </spacer>
          </item>
-         <item row="3" column="0" colspan="7">
+         <item row="7" column="5">
+          <widget class="QTextBrowser" name="txt_browser">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="6">
           <widget class="QLabel" name="gamename_label">
            <property name="font">
             <font>
@@ -123,7 +120,7 @@ border-color: rgba(255, 255, 255, 128);</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="5" rowspan="2">
+         <item row="4" column="4" rowspan="2">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -135,30 +132,6 @@ border-color: rgba(255, 255, 255, 128);</string>
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="7" column="0" colspan="6">
-          <widget class="QTextBrowser" name="metadata_browser">
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="6">
-          <widget class="QTextBrowser" name="txt_browser">
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
-           </property>
-          </widget>
          </item>
          <item row="4" column="0" rowspan="2">
           <widget class="QPushButton" name="playgame_btn">
@@ -176,21 +149,19 @@ border-color: rgba(255, 255, 255, 128);</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="3">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>游戏时间</string>
+         <item row="7" column="0" colspan="5">
+          <widget class="QTextBrowser" name="metadata_browser">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="3">
-          <widget class="QLabel" name="total_time_label">
-           <property name="text">
-            <string>0分钟</string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="2">
+         <item row="4" column="1" rowspan="2">
           <widget class="QLabel" name="last_run_label">
            <property name="styleSheet">
             <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
@@ -198,44 +169,18 @@ border-color: rgba(255, 255, 255, 128);</string>
            <property name="text">
             <string>N/A</string>
            </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QLabel" name="label">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
-           </property>
-           <property name="text">
-            <string>最后运行日期</string>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLabel" name="label_2">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
-           </property>
+         <item row="4" column="2" rowspan="2">
+          <widget class="QLabel" name="total_time_label">
            <property name="text">
-            <string>云状态</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;游戏时间&lt;/p&gt;&lt;p&gt;0分钟&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>TextLabel</string>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>

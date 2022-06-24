@@ -1,5 +1,5 @@
 # cfw
-# 2022.6.23
+# 2022.6.24
 
 import os
 import sys
@@ -33,10 +33,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setup_connect(self):
         self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
         self.gamelist_widget.itemDoubleClicked.connect(self.attributes)
+        self.add_game_btn
         self.scan_game_btn.clicked.connect(self.scan_game)
         self.setting_btn.clicked.connect(self.setting)
         self.playgame_btn.clicked.connect(self.play_game)
-        self.home_btn.clicked.connect(self.attributes)
 
     def load_game(self):
         self.gamelist_widget.clear()
@@ -61,8 +61,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.game_path = game_info["game_path"]
         # 设置游戏程序路径
         self.exe_path = game_info["exe_path"]
-        # 获取最后运行时间
-        self.last_run_label.setText(game_info["last_time"])
+        # 设置最后运行日期
+        last_run_text = "最后运行日期\n" + game_info["last_time"]
+        self.last_run_label.setText(last_run_text)
+        # 设置游戏时间
+        total_time_text = "游戏时间\n" + game_info["total_time"]
+        self.total_time_label.setText(total_time_text)
         # 显示元数据
         self.metadata_browser.clear()
         self.metadata_path = os.path.join("metadata", key_value + ".txt")
@@ -108,10 +112,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "ps": "",
                 "run_args": "",
                 "enable_sync": False,
-                "ncd_path": "N\A",
             }
             self.game_data_obj.create_game(i.name, game_info_dict)
+        # 断开信号连接防止出现信号回环
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
         self.load_game()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
 
     def play_game(self):
         # 运行游戏
@@ -141,6 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.config_obj, self.game_data_obj, game_name
         )
         attributes_win.exec()
+        # 断开信号连接防止出现信号回环
         self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
         self.load_game()
         self.load_game_data()

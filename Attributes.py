@@ -1,5 +1,5 @@
 # cfw
-# 2022.6.22
+# 2022.6.24
 
 import os
 
@@ -24,6 +24,8 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.game_name = game_name
         self.create_dict()
         self.load_game_data()
+        # 加载完数据后再连接信号
+        self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
         self.load_sync_info()
 
     def setup_connect(self):
@@ -38,10 +40,9 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.change_bg_btn.clicked.connect(self.change_bg)
         self.edit_metadata_btn.clicked.connect(self.edit_metadata)
         self.edit_txt_btn.clicked.connect(self.edit_txt)
+        self.remove_game_btn.clicked.connect(self.remove_game)
         # 存档云同步选项卡
-
-        self.open_savedata_btn
-        self.change_savedata_btn
+        self.open_savedata_btn.clicked.connect(self.open_savedata)
         self.fix_ncd_btn
 
     def create_dict(self):
@@ -74,7 +75,6 @@ class AttributesWindow(QDialog, Ui_Dialog):
             widget2.setText(self.game_info[key2])
             widget2.setCursorPosition(0)
         self.use_ncd_checkbox.setChecked(self.game_info["enable_sync"])
-        self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
 
     def load_sync_info(self):
         ncd_path = self.config_obj.confdata_dict["ncd_path"]
@@ -111,17 +111,9 @@ class AttributesWindow(QDialog, Ui_Dialog):
         if new_exe_path != ".":
             new_exe_path = new_exe_path
             self.exe_path_edit.setText(new_exe_path)
-        # 选择游戏存档文件夹
-        # new_save_path = QFileDialog.getExistingDirectory(
-        #     self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
-        # )
-        # new_save_path = os.path.normpath(new_save_path)
-        # if new_save_path != ".":
-        #     new_save_path = new_save_path
-        #     self.savedata_edit.setText(new_save_path)
 
     def change_icon(self):
-        pass
+        self.game_data_obj.del_game(self.game_name)
 
     def change_bg(self):
         # 选择一个图片文件，尝试压缩成1600*900
@@ -147,6 +139,19 @@ class AttributesWindow(QDialog, Ui_Dialog):
     def edit_txt(self):
         txt_path = os.path.join("metadata", self.game_name + "_txt.txt")
         os.startfile(txt_path)
+
+    def remove_game(self):
+        self.game_data_obj.del_game(self.game_name)
+        # 删除元数据与攻略和背景图片
+        bg_path = os.path.join("image", self.game_name + ".jpg")
+        metadata_path = os.path.join("metadata", self.game_name + ".txt")
+        txt_path = os.path.join("metadata", self.game_name + "_txt.txt")
+        self.close()
+
+    def open_savedata(self):
+        path = self.game_info["savedata_path"]
+        real_path = os.path.realpath(path)
+        os.startfile(real_path)
 
     def save_game_data(self) -> bool:
         # 检查游戏名称是否为空
@@ -175,7 +180,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
         old_game_data_dict = self.game_data_obj.get_game_data(old_name)
         self.game_data_obj.del_game(old_name)
         self.game_data_obj.create_game(new_name, old_game_data_dict)
-        # 确定路径
+        # 重命名元数据与攻略文件
         src_bg_path = os.path.join("image", old_name + ".jpg")
         dst_bg_path = os.path.join("image", new_name + ".jpg")
         src_path = os.path.join("metadata", old_name + ".txt")
@@ -189,11 +194,12 @@ class AttributesWindow(QDialog, Ui_Dialog):
             src_txt_path: dst_txt_path,
         }
         # 检查路径
-        for src, tag in rename_dict.items():
-            if os.path.exists(tag):
+        for src, dst in rename_dict.items():
+            if os.path.exists(dst):
                 continue
             if os.path.exists(src):
-                os.rename(src, tag)
+                # 重命名
+                os.rename(src, dst)
         return True
 
     def use_ncd(self, checkbox_stats: int):
@@ -201,6 +207,14 @@ class AttributesWindow(QDialog, Ui_Dialog):
             print("关闭同步连接，询问是否删除云端存档")
         elif checkbox_stats == 2:
             print("打开同步连接，进入创建流程")
+            # 选择游戏存档文件夹
+        # new_save_path = QFileDialog.getExistingDirectory(
+        #     self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
+        # )
+        # new_save_path = os.path.normpath(new_save_path)
+        # if new_save_path != ".":
+        #     new_save_path = new_save_path
+        #     self.savedata_edit.setText(new_save_path)
         print(checkbox_stats)
 
     def ok_fun(self):
