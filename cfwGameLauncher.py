@@ -1,5 +1,15 @@
 # cfw
-# 2022.6.24
+# 2022.6.25
+
+# ToDo:
+# 需要添加托盘模块
+# add game添加重名冲突分歧
+# scan game同理
+# 实装 运行参数 功能
+
+# bug list:
+# 关闭属性窗口后会自动回弹到第一项
+
 
 import os
 import sys
@@ -28,13 +38,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_game()
 
     def setup_ui(self):
-        print("setup ui")
+        pass
 
     def setup_connect(self):
         self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
         self.gamelist_widget.itemDoubleClicked.connect(self.attributes)
-        self.add_game_btn
+        self.add_game_btn.clicked.connect(self.add_game)
         self.scan_game_btn.clicked.connect(self.scan_game)
+        self.sort_btn.clicked.connect(self.sort_game_list)
         self.setting_btn.clicked.connect(self.setting)
         self.playgame_btn.clicked.connect(self.play_game)
 
@@ -89,8 +100,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pale.setBrush(QPalette.Window, QBrush(QPixmap(bg_path)))
         self.setPalette(pale)
 
+    def add_game(self):
+        # 添加游戏
+        # 需要进行重名处理
+        game_folder_path = self.config_obj.confdata_dict["user_folder"]
+        if os.path.exists(game_folder_path):
+            folder = game_folder_path
+        else:
+            folder = ""
+        game_path = QFileDialog.getExistingDirectory(self, "请选择游戏文件夹...", folder)
+        if game_path == ".":
+            return
+        exe_path = QFileDialog.getOpenFileName(self, "请选择游戏程序文件...", game_path, "*.exe")
+        if exe_path == ".":
+            return
+        game_name = os.path.basename(game_path)
+        game_info_dict = {
+            "nick_name": game_name,
+            "game_path": game_path,
+            "exe_path": exe_path,
+            "savedata_path": "N\A",
+            "last_time": "N\A",
+            "total_time": "N\A",
+            "ps": "",
+            "run_args": "",
+            "enable_sync": False,
+        }
+        self.game_data_obj.create_game(game_name, game_info_dict)
+        # 断开信号连接防止出现信号回环
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
+        self.load_game()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+
     def scan_game(self):
         # 批量扫描游戏
+        # 需要进行重名处理
         scan_game_path = QFileDialog.getExistingDirectory(self, "请选择需要扫描的文件夹...")
         scan_game_path = os.path.normpath(scan_game_path)
         if scan_game_path == ".":
@@ -115,6 +159,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             }
             self.game_data_obj.create_game(i.name, game_info_dict)
         # 断开信号连接防止出现信号回环
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
+        self.load_game()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+
+    def sort_game_list(self):
+        self.game_data_obj.sort_game()
         self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
         self.load_game()
         self.gamelist_widget.currentItemChanged.connect(self.load_game_data)

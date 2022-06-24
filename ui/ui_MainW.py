@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWMrCSnx.ui'
+## Form generated from reading UI file 'MainWKATCcM.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -40,6 +40,11 @@ class Ui_MainWindow(object):
         self.scan_game_btn.setObjectName(u"scan_game_btn")
 
         self.horizontalLayout.addWidget(self.scan_game_btn)
+
+        self.sort_btn = QPushButton(self.centralwidget)
+        self.sort_btn.setObjectName(u"sort_btn")
+
+        self.horizontalLayout.addWidget(self.sort_btn)
 
         self.setting_btn = QPushButton(self.centralwidget)
         self.setting_btn.setObjectName(u"setting_btn")
@@ -142,6 +147,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"cfwGameLauncher", None))
         self.add_game_btn.setText(QCoreApplication.translate("MainWindow", u"\u6dfb\u52a0\u6e38\u620f", None))
         self.scan_game_btn.setText(QCoreApplication.translate("MainWindow", u"\u6279\u91cf\u626b\u63cf\u6e38\u620f", None))
+        self.sort_btn.setText(QCoreApplication.translate("MainWindow", u"\u6392\u5e8f", None))
         self.setting_btn.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
         self.gamename_label.setText(QCoreApplication.translate("MainWindow", u"game_name", None))
         self.playgame_btn.setText(QCoreApplication.translate("MainWindow", u"\u5f00\u59cb\u6e38\u620f", None))
