@@ -63,7 +63,11 @@ def create_sync(local_savepath: str, ncd_gamepath: str):
     try:
         os.symlink(ncd_savepath, local_savepath, True)
     except:
-        return False
+        if not os.path.exists(local_savepath):
+            os.makedirs(local_savepath)
+        shutil.move(ncd_savepath, os.path.split(local_savepath)[0])
+        shutil.rmtree(ncd_gamepath)
+        return "创建符号连接失败,请检查是否管理员权限运行!"
     return True
 
 
@@ -73,11 +77,15 @@ def del_sync(local_savepath: str, ncd_gamepath: str):
         ncd_savepath = os.path.join(ncd_gamepath, base_name)
         os.remove(local_savepath)
         shutil.copytree(ncd_savepath, local_savepath)
+        # 备份存档防止丢失
+        game_name = os.path.basename(ncd_gamepath)
+        backup_path = os.path.join("backup", game_name)
+        shutil.copytree(ncd_savepath, backup_path)
+        # 删除云端存档
         shutil.rmtree(ncd_gamepath)
+        shutil.rmtree("backup")
         return True
     except Exception:
-        log = traceback.format_exc()
-        print(log)
         return False
 
 

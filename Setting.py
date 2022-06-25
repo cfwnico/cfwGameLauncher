@@ -1,12 +1,14 @@
 # cfw
-# 2022.6.23
+# 2022.6.26
 
+import json
 import os
+from shutil import copyfile, copytree
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from Config import Config
+from Config import Config, GameData
 from ui.ui_SettingW import Ui_Dialog
 from PIL import Image
 from Common import messagebox
@@ -24,9 +26,9 @@ class SettingWindow(QDialog, Ui_Dialog):
 
     def setup_connect(self):
         # 公共按钮
-        self.ok_btn.clicked.connect(self.ok_fun)
-        self.cancel_btn.clicked.connect(self.cancel_fun)
-        self.apply_btn.clicked.connect(self.apply_fun)
+        self.ok_btn.clicked.connect(self.ok_func)
+        self.cancel_btn.clicked.connect(self.cancel_func)
+        self.apply_btn.clicked.connect(self.apply_func)
         # 常规选项卡
         self.change_head_btn.clicked.connect(self.change_head)
         self.open_folder_btn.clicked.connect(self.open_folder)
@@ -36,6 +38,10 @@ class SettingWindow(QDialog, Ui_Dialog):
         self.clu_size_btn.clicked.connect(self.clu_size)
         self.change_ncd_btn.clicked.connect(self.change_ncd)
         self.manage_all_btn.clicked.connect(self.manage_all_cloudsave)
+        # 高级选项卡
+        self.export_bg_btn.clicked.connect(self.export_bg)
+        self.export_save_btn.clicked.connect(self.export_savedata)
+        self.edit_json_btn.clicked.connect(self.edit_json)
 
     def create_dict(self):
         self.labels_dict = {
@@ -167,13 +173,67 @@ class SettingWindow(QDialog, Ui_Dialog):
     def manage_all_cloudsave(self):
         pass
 
-    def ok_fun(self):
+    def export_bg(self):
+        self.export_bg_btn.setText("正在导出背景图片...")
+        QApplication.processEvents()
+        with open("userdata\\gamedata.json", "r", encoding="utf-8") as f:
+            gamedata_dict: dict = json.load(f)
+        export_path = "export_bg"
+        if not os.path.exists(export_path):
+            os.mkdir("export_bg")
+        v = 0
+        for i in gamedata_dict.keys():
+            src = os.path.join("image", i + ".jpg")
+            dst = os.path.join("export_bg", i + ".jpg")
+            if os.path.exists(src):
+                copyfile(src, dst)
+                v += 1
+        messagebox(self, QMessageBox.Information, "完成", f"共导出{v}张背景图片!")
+        self.export_bg_btn.setText("导出所有背景图片")
+        os.startfile("export_bg")
+
+    def export_savedata(self):
+        self.export_save_btn.setText("正在导出存档...")
+        QApplication.processEvents()
+        game_data_obj = GameData("userdata\\gamedata.json")
+        export_root_path = "export_savedata"
+        if not os.path.exists(export_root_path):
+            os.mkdir(export_root_path)
+        game_list = game_data_obj.get_game_list()
+        v = 0
+        for i in game_list:
+            game_info = game_data_obj.get_game_data(i)
+            src_path = game_info["savedata_path"]
+            # 追踪符号链接
+            src_path = os.path.normpath(src_path)
+            src_path = os.path.realpath(src_path)
+            # 检测存档合法性
+            if os.path.exists(src_path):
+                dst_path = os.path.join("export_savedata", i)
+                copytree(src_path, dst_path)
+                v += 1
+        messagebox(self, QMessageBox.Information, "完成", f"共导出{v}个游戏存档!")
+        os.startfile("export_savedata")
+        self.export_save_btn.setText("导出所有游戏存档")
+
+    def edit_json(self):
+        os.startfile("userdata")
+        # new_game_path = QFileDialog.getExistingDirectory(
+        #     self, "请选择游戏文件夹...", "userdata"
+        # )
+        # print(new_game_path)
+        # if new_game_path == ".":
+        #     print(".")
+        # else:
+        #     print(new_game_path)
+
+    def ok_func(self):
         if self.save_setting():
             self.close()
 
-    def cancel_fun(self):
+    def cancel_func(self):
         self.close()
 
-    def apply_fun(self):
+    def apply_func(self):
         self.save_setting()
         self.load_setting()

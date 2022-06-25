@@ -288,7 +288,7 @@
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="4" column="0">
+         <item row="5" column="0">
           <spacer name="verticalSpacer_3">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -301,13 +301,6 @@
            </property>
           </spacer>
          </item>
-         <item row="2" column="0">
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>导出所有背景图片</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QCheckBox" name="waifu2x_checkbox">
            <property name="enabled">
@@ -315,6 +308,13 @@
            </property>
            <property name="text">
             <string>切换背景图片时使用waifu2x精缩放(会消耗较长时间)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="export_bg_btn">
+           <property name="text">
+            <string>导出所有背景图片</string>
            </property>
           </widget>
          </item>
@@ -326,9 +326,16 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="export_save_btn">
            <property name="text">
-            <string>备份所有存档到桌面</string>
+            <string>导出所有游戏存档</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="edit_json_btn">
+           <property name="text">
+            <string>编辑.json</string>
            </property>
           </widget>
          </item>

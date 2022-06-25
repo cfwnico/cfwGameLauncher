@@ -1,17 +1,19 @@
 # cfw
-# 2022.6.25
+# 2022.6.26
 
 # ToDo:
 # 添加托盘模块
 # add game添加重名冲突分歧
 # scan game同理
 # 实装 运行参数 功能
-# 已同步游戏改名处理
 # 图标模块
 # 寻找在pyqt中可以临时UAC提权的东西
+# metadata爬取,攻略爬取
+# 在线爬取图片模块
 
 # bug list:
-#
+# 同步对话框点取消后checkbox会变得不正常
+# noramlpath函数后空字符串会变成"."
 
 
 import os

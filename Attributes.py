@@ -24,15 +24,15 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.game_name = game_name
         self.create_dict()
         self.load_game_data()
+        self.load_sync_info()
         # 加载完数据后再连接信号
         self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
-        self.load_sync_info()
 
     def setup_connect(self):
         # 公共按钮
-        self.ok_btn.clicked.connect(self.ok_fun)
-        self.cancel_btn.clicked.connect(self.cancel_fun)
-        self.apply_btn.clicked.connect(self.apply_fun)
+        self.ok_btn.clicked.connect(self.ok_func)
+        self.cancel_btn.clicked.connect(self.cancel_func)
+        self.apply_btn.clicked.connect(self.apply_func)
         # 常规选项卡
         self.open_folder_btn.clicked.connect(self.open_folder)
         self.change_path_btn.clicked.connect(self.change_path)
@@ -90,8 +90,10 @@ class AttributesWindow(QDialog, Ui_Dialog):
             print(result)
             if result is None:
                 self.sync_status_label.setText("路径设置错误")
+                self.use_ncd_checkbox.setChecked(False)
             if result is False:
                 self.sync_status_label.setText("未进行同步连接")
+                self.use_ncd_checkbox.setChecked(False)
             if isinstance(result, dict):
                 for key, widget in self.sync_dict.items():
                     widget.setText(result[key])
@@ -206,9 +208,14 @@ class AttributesWindow(QDialog, Ui_Dialog):
                 os.rename(src, dst)
         # 重命名对应的云存档
         if self.game_info["enable_sync"]:
-            pass
-        else:
-            pass
+            local_savepath = self.game_info["savedata_path"]
+            ncd_path = self.config_obj.confdata_dict["ncd_path"]
+            old_ncd_gamepath = os.path.join(ncd_path, old_name)
+            new_ncd_gamepath = os.path.join(ncd_path, new_name)
+            if not del_sync(local_savepath, old_ncd_gamepath):
+                messagebox(self, QMessageBox.Critical, "错误!", "重命名云存档时发生错误!")
+            if not create_sync(local_savepath, new_ncd_gamepath):
+                messagebox(self, QMessageBox.Critical, "错误!", "重命名云存档时发生错误!")
         return True
 
     def use_ncd(self, checkbox_stats: int):
@@ -238,7 +245,6 @@ class AttributesWindow(QDialog, Ui_Dialog):
         local_savepath = QFileDialog.getExistingDirectory(
             self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
         )
-        local_savepath = os.path.normpath(local_savepath)
         if local_savepath == "":
             return
         else:
@@ -253,7 +259,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
         ncd_gamepath = os.path.join(ncd_path, self.game_name)
         # 创建符号链接
         result = create_sync(local_savepath, ncd_gamepath)
-        if not result:
+        if isinstance(result, str):
             messagebox(self, QMessageBox.Critical, "错误!", "创建同步连接错误!" + result)
             return
         # 重新写入路径数据
@@ -264,9 +270,14 @@ class AttributesWindow(QDialog, Ui_Dialog):
 
     def init_del_sync(self):
         replay = messagebox(
-            self, QMessageBox.Warning, "警告!", "这将会停止云端同步!该操作不可逆,你目前的云端存档会取回本地,不会丢失"
+            self,
+            QMessageBox.Warning,
+            "警告!",
+            "这将会停止云端同步!该操作不可逆,你目前的云端存档会取回本地,不会丢失.",
+            "yesno",
         )
-        if replay == 1:
+        if replay == 1:  # 取消按钮
+            self.use_ncd_checkbox.setChecked(True)
             return
         local_savepath = self.game_info["savedata_path"]
         ncd_path = self.config_obj.confdata_dict["ncd_path"]
@@ -276,14 +287,20 @@ class AttributesWindow(QDialog, Ui_Dialog):
         if result:
             self.game_data_obj.save_game_data(self.game_name, "enable_sync", False)
         else:
-            messagebox(self, QMessageBox.Critical, "错误!", "删除同步连接错误!")
+            messagebox(
+                self,
+                QMessageBox.Critical,
+                "错误!",
+                "断开同步连接错误!如果存档丢失请到本程序目录下'backup'文件夹寻找.",
+            )
+        self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
 
-    def ok_fun(self):
+    def ok_func(self):
         if self.save_game_data():
             self.close()
 
-    def cancel_fun(self):
+    def cancel_func(self):
         self.close()
 
-    def apply_fun(self):
+    def apply_func(self):
         self.save_game_data()
