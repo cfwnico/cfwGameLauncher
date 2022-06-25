@@ -2,13 +2,12 @@
 # 2022.6.25
 
 import os
-
+import shutil
+import traceback
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-
 from Common import get_edit_time, path_is_symlink
-import shutil
 
 
 def check_sync_status(local_savepath: str, ncd_savepath: str):
@@ -51,23 +50,35 @@ def create_sync(local_savepath: str, ncd_gamepath: str):
     # ncd_gamepath:such as:D:\cfwcloud\SaveDataSync\Summer Pockets
     # 安全起见再次检查合法性
     if not os.path.exists(local_savepath):
-        return
-    if not os.path.exists(ncd_gamepath):
+        return "本地游戏存档文件夹不存在,请选择正确的路径!"
+    if os.path.exists(ncd_gamepath):
+        if len(os.path.dirname(ncd_gamepath)) != 0:
+            return "云端文件夹存在该游戏存档,请检查!"
+    else:
         os.makedirs(ncd_gamepath)
-    shutil.copytree(local_savepath, ncd_gamepath)
-    # 备份
-    backup_path = "backup"
-    shutil.copytree(local_savepath, backup_path)
-    # 删除本地存档文件
-    shutil.rmtree(local_savepath)
-    # 创建符号链接
+    shutil.move(local_savepath, ncd_gamepath)
     base_name = os.path.basename(local_savepath)
     ncd_savepath = os.path.join(ncd_gamepath, base_name)
-    os.symlink(ncd_savepath, local_savepath, True)
+    # 创建符号链接,需要UAC提权
+    try:
+        os.symlink(ncd_savepath, local_savepath, True)
+    except:
+        return False
+    return True
 
 
-def del_sync(local_savepath: str, ncd_savepath: str):
-    pass
+def del_sync(local_savepath: str, ncd_gamepath: str):
+    try:
+        base_name = os.path.basename(local_savepath)
+        ncd_savepath = os.path.join(ncd_gamepath, base_name)
+        os.remove(local_savepath)
+        shutil.copytree(ncd_savepath, local_savepath)
+        shutil.rmtree(ncd_gamepath)
+        return True
+    except Exception:
+        log = traceback.format_exc()
+        print(log)
+        return False
 
 
 def fix_sync(local_savepath: str, ncd_savepath: str):
@@ -82,7 +93,3 @@ def get_savedata_info(savedata_path: str):
     edit_time = get_edit_time(savedata_path)
     info = {"status": "已同步", "time": edit_time, "ncd_savepath": savedata_path}
     return info
-
-
-def get_ncd_savepath(ncd_path: str):
-    pass

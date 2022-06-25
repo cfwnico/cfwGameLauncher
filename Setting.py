@@ -103,7 +103,7 @@ class SettingWindow(QDialog, Ui_Dialog):
             self, "请选择头像图片...", filter="图片文件 (*.png *.jpg *.jpeg)"
         )
         new_head_path = os.path.normpath(new_head_path[0])
-        if new_head_path == ".":
+        if new_head_path == "":
             return
         head_image = Image.open(new_head_path)
         proc_image = head_image.resize((150, 150), Image.ANTIALIAS)
@@ -117,7 +117,7 @@ class SettingWindow(QDialog, Ui_Dialog):
             self, "请选择游戏文件夹...", self.folder_path_edit.text()
         )
         new_folder_path = os.path.normpath(new_folder_path)
-        if new_folder_path != ".":
+        if new_folder_path != "":
             new_folder_path = new_folder_path
             self.folder_path_edit.setText(new_folder_path)
 
@@ -160,7 +160,7 @@ class SettingWindow(QDialog, Ui_Dialog):
             self, "请选择云端存档文件夹...", self.ncd_folder_edit.text()
         )
         new_ncd_path = os.path.normpath(new_ncd_path)
-        if new_ncd_path != ".":
+        if new_ncd_path != "":
             new_ncd_path = new_ncd_path
             self.ncd_folder_edit.setText(new_ncd_path)
 

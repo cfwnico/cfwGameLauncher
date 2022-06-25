@@ -2,13 +2,16 @@
 # 2022.6.25
 
 # ToDo:
-# 需要添加托盘模块
+# 添加托盘模块
 # add game添加重名冲突分歧
 # scan game同理
 # 实装 运行参数 功能
+# 已同步游戏改名处理
+# 图标模块
+# 寻找在pyqt中可以临时UAC提权的东西
 
 # bug list:
-# 关闭属性窗口后会自动回弹到第一项
+#
 
 
 import os
@@ -49,14 +52,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setting_btn.clicked.connect(self.setting)
         self.playgame_btn.clicked.connect(self.play_game)
 
-    def load_game(self):
+    def load_game(self, current_row: int = 0):
         self.gamelist_widget.clear()
         game_list = self.game_data_obj.get_game_list()
+        self.cache_game_list = game_list
         for i in game_list:
             item = QListWidgetItem()
             item.setText(i)
             self.gamelist_widget.addItem(item)
-        self.gamelist_widget.setCurrentRow(0)
+        self.gamelist_widget.setCurrentRow(current_row)
+
+    def update_game_list(self):
+        cache_list_set = set(self.cache_game_list)
+        game_list = self.game_data_obj.get_game_list()
+        game_list_set = set(game_list)
+        old_game_set = cache_list_set.difference(game_list_set)
+        new_game_set = game_list_set.difference(cache_list_set)
+        old_game_list = list(old_game_set)
+        new_game_list = list(new_game_set)
+        if len(old_game_list) != 0:
+            for i in old_game_list:
+                item = self.gamelist_widget.findItems(i, Qt.MatchExactly)[0]
+                item_row = self.gamelist_widget.row(item)
+                self.gamelist_widget.takeItem(item_row)
+        if len(new_game_list) != 0:
+            for i in new_game_list:
+                item = QListWidgetItem()
+                item.setText(i)
+                self.gamelist_widget.addItem(item)
+        self.cache_game_list = game_list
 
     def load_game_data(self, item: QListWidgetItem = None):
         if item is None:
@@ -109,10 +133,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             folder = ""
         game_path = QFileDialog.getExistingDirectory(self, "请选择游戏文件夹...", folder)
-        if game_path == ".":
+        if game_path == "":
             return
         exe_path = QFileDialog.getOpenFileName(self, "请选择游戏程序文件...", game_path, "*.exe")
-        if exe_path == ".":
+        if exe_path == "":
             return
         game_name = os.path.basename(game_path)
         game_info_dict = {
@@ -137,7 +161,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 需要进行重名处理
         scan_game_path = QFileDialog.getExistingDirectory(self, "请选择需要扫描的文件夹...")
         scan_game_path = os.path.normpath(scan_game_path)
-        if scan_game_path == ".":
+        if scan_game_path == "":
             return
         dir = os.scandir(scan_game_path)
         for i in dir:
@@ -190,16 +214,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         setting_win = SettingWindow(self.config_obj)
         setting_win.exec()
 
-    def attributes(self, item):
+    def attributes(self, item: QListWidgetItem):
         # 打开属性窗口
         game_name = item.text()
+        current_row = self.gamelist_widget.row(item)
         attributes_win = AttributesWindow(
             self.config_obj, self.game_data_obj, game_name
         )
         attributes_win.exec()
         # 断开信号连接防止出现信号回环
         self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
-        self.load_game()
+        self.update_game_list()
         self.load_game_data()
         self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
 

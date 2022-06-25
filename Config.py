@@ -58,6 +58,5 @@ class GameData:
     def sort_game(self):
         a1 = sorted(self._gamedata_dict.items(), key=lambda x: x[0])
         self._gamedata_dict = dict(a1)
-        print(self._gamedata_dict)
         with open(self.data_filepath, "w", encoding="utf-8") as f:
             json.dump(self._gamedata_dict, f, ensure_ascii=False)

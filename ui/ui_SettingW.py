@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'SettingWiworva.ui'
+## Form generated from reading UI file 'SettingWOveqPS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -225,14 +225,32 @@ class Ui_Dialog(object):
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.gridLayout_6 = QGridLayout()
         self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_6.addItem(self.verticalSpacer_3, 4, 0, 1, 1)
+
+        self.pushButton_2 = QPushButton(self.adva_tab)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+
+        self.gridLayout_6.addWidget(self.pushButton_2, 2, 0, 1, 1)
+
         self.waifu2x_checkbox = QCheckBox(self.adva_tab)
         self.waifu2x_checkbox.setObjectName(u"waifu2x_checkbox")
+        self.waifu2x_checkbox.setEnabled(False)
 
         self.gridLayout_6.addWidget(self.waifu2x_checkbox, 0, 0, 1, 1)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.line_5 = QFrame(self.adva_tab)
+        self.line_5.setObjectName(u"line_5")
+        self.line_5.setFrameShape(QFrame.HLine)
+        self.line_5.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout_6.addItem(self.verticalSpacer_3, 1, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.line_5, 1, 0, 1, 1)
+
+        self.pushButton = QPushButton(self.adva_tab)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.gridLayout_6.addWidget(self.pushButton, 3, 0, 1, 1)
 
 
         self.gridLayout_7.addLayout(self.gridLayout_6, 0, 0, 1, 1)
@@ -305,9 +323,11 @@ class Ui_Dialog(object):
         self.change_ncd_btn.setText(QCoreApplication.translate("Dialog", u"\u66f4\u6539\u4e91\u7aef\u5b58\u6863\u6587\u4ef6\u5939", None))
         self.label_5.setText(QCoreApplication.translate("Dialog", u"\u4e91\u7aef\u5b58\u6863\u6587\u4ef6\u5939:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.ncd_tab), QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65", None))
+        self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"\u5bfc\u51fa\u6240\u6709\u80cc\u666f\u56fe\u7247", None))
         self.waifu2x_checkbox.setText(QCoreApplication.translate("Dialog", u"\u5207\u6362\u80cc\u666f\u56fe\u7247\u65f6\u4f7f\u7528waifu2x\u7cbe\u7f29\u653e(\u4f1a\u6d88\u8017\u8f83\u957f\u65f6\u95f4)", None))
+        self.pushButton.setText(QCoreApplication.translate("Dialog", u"\u5907\u4efd\u6240\u6709\u5b58\u6863\u5230\u684c\u9762", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.adva_tab), QCoreApplication.translate("Dialog", u"\u9ad8\u7ea7", None))
-        self.label_10.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">cfwGameLauncher</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">Ver 0.1.2</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">Python 3.10</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">PySide 6.3</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">cfw</span></p></body></html>", None))
+        self.label_10.setText(QCoreApplication.translate("Dialog", u"<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">cfwGameLauncher</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">Ver 0.1.3</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">Python 3.10</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">PySide 6.3</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:700;\">cfw</span></p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.about_tab), QCoreApplication.translate("Dialog", u"\u5173\u4e8e", None))
         self.ok_btn.setText(QCoreApplication.translate("Dialog", u"\u786e\u5b9a", None))
         self.cancel_btn.setText(QCoreApplication.translate("Dialog", u"\u53d6\u6d88", None))

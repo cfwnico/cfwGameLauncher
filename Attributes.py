@@ -106,13 +106,13 @@ class AttributesWindow(QDialog, Ui_Dialog):
             self, "请选择游戏文件夹...", self.game_folder_edit.text()
         )
         new_game_path = os.path.normpath(new_game_path)
-        if new_game_path != ".":
+        if new_game_path != "":
             new_game_path = new_game_path
             self.game_folder_edit.setText(new_game_path)
         # 选择游戏程序文件
         new_exe_path = QFileDialog.getOpenFileName(self, "请选择游戏程序文件...", filter="*.exe")
         new_exe_path = os.path.normpath(new_exe_path[0])
-        if new_exe_path != ".":
+        if new_exe_path != "":
             new_exe_path = new_exe_path
             self.exe_path_edit.setText(new_exe_path)
 
@@ -128,7 +128,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
             self, "请选择背景图片...", filter="图片文件 (*.png *.jpg *.jpeg)"
         )
         new_bg_path = os.path.normpath(new_bg_path[0])
-        if new_bg_path == ".":
+        if new_bg_path == "":
             return
         bg_image = Image.open(new_bg_path)
         w, h = bg_image.size
@@ -204,20 +204,33 @@ class AttributesWindow(QDialog, Ui_Dialog):
             if os.path.exists(src):
                 # 重命名
                 os.rename(src, dst)
+        # 重命名对应的云存档
+        if self.game_info["enable_sync"]:
+            pass
+        else:
+            pass
         return True
 
     def use_ncd(self, checkbox_stats: int):
         if checkbox_stats == 0:
-            print("关闭同步连接，询问是否删除云端存档")
+            # 关闭同步连接，询问是否删除云端存档
+            self.use_ncd_checkbox.stateChanged.disconnect(self.use_ncd)
+            self.init_del_sync()
+            self.load_game_data()
+            self.load_sync_info()
+            self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
         elif checkbox_stats == 2:
-            print("打开同步连接，进入创建流程")
+            # 开启同步连接，进入创建连接流程
+            self.use_ncd_checkbox.stateChanged.disconnect(self.use_ncd)
             self.init_create_sync()
-
-        print(checkbox_stats)
+            self.load_game_data()
+            self.load_sync_info()
+            self.use_ncd_checkbox.stateChanged.connect(self.use_ncd)
 
     def init_create_sync(self):
         # 首先检测云端文件夹合法性
         ncd_path = self.config_obj.confdata_dict["ncd_path"]
+        ncd_path = os.path.normpath(ncd_path)
         if not os.path.exists(ncd_path):
             messagebox(self, QMessageBox.Critical, "错误!", "请检查设置中的云端存档文件夹路径!")
             return
@@ -226,18 +239,44 @@ class AttributesWindow(QDialog, Ui_Dialog):
             self, "请选择游戏存档文件夹...", self.game_folder_edit.text()
         )
         local_savepath = os.path.normpath(local_savepath)
-        if local_savepath != ".":
+        if local_savepath == "":
+            return
+        else:
             local_savepath = local_savepath
             self.savedata_label.setText(local_savepath)
-        # 检测存档路径合法性
+        # 检测存档路径合法性,防止产生回环云存档
+        pre = os.path.commonprefix([ncd_path, local_savepath])
+        if pre == ncd_path:
+            messagebox(self, QMessageBox.Critical, "错误!", "本地存档文件夹路径错误!")
+            return
         # 获取云端文件夹路径
         ncd_gamepath = os.path.join(ncd_path, self.game_name)
-        create_sync(local_savepath, ncd_gamepath)
+        # 创建符号链接
+        result = create_sync(local_savepath, ncd_gamepath)
+        if not result:
+            messagebox(self, QMessageBox.Critical, "错误!", "创建同步连接错误!" + result)
+            return
         # 重新写入路径数据
         self.game_data_obj.save_game_data(
             self.game_name, "savedata_path", local_savepath
         )
         self.game_data_obj.save_game_data(self.game_name, "enable_sync", True)
+
+    def init_del_sync(self):
+        replay = messagebox(
+            self, QMessageBox.Warning, "警告!", "这将会停止云端同步!该操作不可逆,你目前的云端存档会取回本地,不会丢失"
+        )
+        if replay == 1:
+            return
+        local_savepath = self.game_info["savedata_path"]
+        ncd_path = self.config_obj.confdata_dict["ncd_path"]
+        ncd_path = os.path.normpath(ncd_path)
+        ncd_gamepath = os.path.join(ncd_path, self.game_name)
+        result = del_sync(local_savepath, ncd_gamepath)
+        if result:
+            self.game_data_obj.save_game_data(self.game_name, "enable_sync", False)
+        else:
+            messagebox(self, QMessageBox.Critical, "错误!", "删除同步连接错误!")
 
     def ok_fun(self):
         if self.save_game_data():

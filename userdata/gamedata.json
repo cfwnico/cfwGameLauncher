@@ -120,17 +120,6 @@
         "run_args": "",
         "enable_sync": false
     },
-    "DOOM Eternal": {
-        "nick_name": "DOOM Eternal",
-        "game_path": "D:\\Game\\DOOM Eternal",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
     "DRACU-RIOT!": {
         "nick_name": "DRACU-RIOT!",
         "game_path": "D:\\Game\\DRACU-RIOT!",
@@ -156,28 +145,6 @@
     "Danganronpa V3 Killing Harmony": {
         "nick_name": "Danganronpa V3 Killing Harmony",
         "game_path": "D:\\Game\\Danganronpa V3 Killing Harmony",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "Diablo": {
-        "nick_name": "Diablo",
-        "game_path": "D:\\Game\\Diablo",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "Emu Cheat 2010": {
-        "nick_name": "Emu Cheat 2010",
-        "game_path": "D:\\Game\\Emu Cheat 2010",
         "exe_path": "N\\A",
         "savedata_path": "N\\A",
         "last_time": "N\\A",
@@ -395,17 +362,6 @@
         "run_args": "",
         "enable_sync": false
     },
-    "New Magic Tower": {
-        "nick_name": "New Magic Tower",
-        "game_path": "D:\\Game\\New Magic Tower",
-        "exe_path": "D:\\Game\\New Magic Tower\\flashplayer_sa.exe",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
     "OPPAI Academy Big, Bouncy, Booby Babes!": {
         "nick_name": "OPPAI Academy Big, Bouncy, Booby Babes!",
         "game_path": "D:\\Game\\OPPAI Academy Big, Bouncy, Booby Babes!",
@@ -454,17 +410,6 @@
         "nick_name": "PrimalHearts",
         "game_path": "D:\\Game\\PrimalHearts",
         "exe_path": "D:\\Game\\PrimalHearts\\primalhearts_crack.exe",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "RA2MD": {
-        "nick_name": "RA2MD",
-        "game_path": "D:\\Game\\RA2MD",
-        "exe_path": "N\\A",
         "savedata_path": "N\\A",
         "last_time": "N\\A",
         "total_time": "N\\A",
@@ -538,53 +483,9 @@
         "run_args": "",
         "enable_sync": false
     },
-    "VirtuaNES": {
-        "nick_name": "VirtuaNES",
-        "game_path": "D:\\Game\\VirtuaNES",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "bazuodao": {
-        "nick_name": "bazuodao",
-        "game_path": "D:\\Game\\bazuodao",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
     "floral·flowlove": {
         "nick_name": "floral·flowlove",
         "game_path": "D:\\Game\\floral·flowlove",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "jinyue2.1": {
-        "nick_name": "jinyue2.1",
-        "game_path": "D:\\Game\\jinyue2.1",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "jinyue2.2": {
-        "nick_name": "jinyue2.2",
-        "game_path": "D:\\Game\\jinyue2.2",
         "exe_path": "N\\A",
         "savedata_path": "N\\A",
         "last_time": "N\\A",
@@ -597,17 +498,6 @@
         "nick_name": "kimaten",
         "game_path": "D:\\Game\\kimaten",
         "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
-    "pvz": {
-        "nick_name": "pvz",
-        "game_path": "D:\\Game\\pvz",
-        "exe_path": "D:\\Game\\pvz\\PlantsVsZombies.exe",
         "savedata_path": "N\\A",
         "last_time": "N\\A",
         "total_time": "N\\A",
@@ -673,9 +563,9 @@
     "冥契的牧神节": {
         "nick_name": "冥契的牧神节",
         "game_path": "D:\\Game\\冥契的牧神节",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
+        "exe_path": "D:\\Game\\冥契的牧神节\\冥契のルペルカリア.exe",
+        "savedata_path": "D:\\Game\\冥契的牧神节\\savedata",
+        "last_time": "2022-06-25 17:29",
         "total_time": "N\\A",
         "ps": "",
         "run_args": "",
@@ -780,6 +670,17 @@
         "run_args": "",
         "enable_sync": false
     },
+    "小粥姐妹": {
+        "nick_name": "粥",
+        "game_path": "D:\\Game\\粥",
+        "exe_path": "N\\A",
+        "savedata_path": "N\\A",
+        "last_time": "N\\A",
+        "total_time": "N\\A",
+        "ps": "",
+        "run_args": "",
+        "enable_sync": false
+    },
     "少女理论及其之后的周边": {
         "nick_name": "少女理论及其之后的周边",
         "game_path": "D:\\Game\\少女理论及其之后的周边",
@@ -860,6 +761,17 @@
     "抖M妹妹想要的私人教学": {
         "nick_name": "抖M妹妹想要的私人教学",
         "game_path": "D:\\Game\\抖M妹妹想要的私人教学",
+        "exe_path": "N\\A",
+        "savedata_path": "N\\A",
+        "last_time": "N\\A",
+        "total_time": "N\\A",
+        "ps": "",
+        "run_args": "",
+        "enable_sync": false
+    },
+    "拔作岛": {
+        "nick_name": "bazuodao",
+        "game_path": "D:\\Game\\bazuodao",
         "exe_path": "N\\A",
         "savedata_path": "N\\A",
         "last_time": "N\\A",
@@ -1011,17 +923,6 @@
         "run_args": "",
         "enable_sync": false
     },
-    "粥": {
-        "nick_name": "粥",
-        "game_path": "D:\\Game\\粥",
-        "exe_path": "N\\A",
-        "savedata_path": "N\\A",
-        "last_time": "N\\A",
-        "total_time": "N\\A",
-        "ps": "",
-        "run_args": "",
-        "enable_sync": false
-    },
     "紅月ゆれる恋あかり": {
         "nick_name": "紅月ゆれる恋あかり",
         "game_path": "D:\\Game\\紅月ゆれる恋あかり",
@@ -1135,6 +1036,28 @@
     "近月少女的礼仪": {
         "nick_name": "近月少女的礼仪",
         "game_path": "D:\\Game\\近月少女的礼仪",
+        "exe_path": "N\\A",
+        "savedata_path": "N\\A",
+        "last_time": "N\\A",
+        "total_time": "N\\A",
+        "ps": "",
+        "run_args": "",
+        "enable_sync": false
+    },
+    "近月少女的礼仪2.1": {
+        "nick_name": "jinyue2.1",
+        "game_path": "D:\\Game\\jinyue2.1",
+        "exe_path": "N\\A",
+        "savedata_path": "N\\A",
+        "last_time": "N\\A",
+        "total_time": "N\\A",
+        "ps": "",
+        "run_args": "",
+        "enable_sync": false
+    },
+    "近月少女的礼仪2.2": {
+        "nick_name": "jinyue2.2",
+        "game_path": "D:\\Game\\jinyue2.2",
         "exe_path": "N\\A",
         "savedata_path": "N\\A",
         "last_time": "N\\A",

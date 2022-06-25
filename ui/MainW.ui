@@ -64,6 +64,12 @@
      <layout class="QGridLayout" name="gridLayout" columnstretch="1,5">
       <item row="0" column="0">
        <widget class="QListWidget" name="gamelist_widget">
+        <property name="minimumSize">
+         <size>
+          <width>262</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
@@ -125,6 +131,9 @@ border-color: rgba(255, 255, 255, 128);</string>
            <property name="scaledContents">
             <bool>false</bool>
            </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item row="4" column="4" rowspan="2">
@@ -183,6 +192,9 @@ border-color: rgba(255, 255, 255, 128);</string>
          </item>
          <item row="4" column="2" rowspan="2">
           <widget class="QLabel" name="total_time_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 128);</string>
+           </property>
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;游戏时间&lt;/p&gt;&lt;p&gt;0分钟&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>

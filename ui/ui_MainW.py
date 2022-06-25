@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWKATCcM.ui'
+## Form generated from reading UI file 'MainWAxMjwU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -62,6 +62,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gamelist_widget = QListWidget(self.centralwidget)
         self.gamelist_widget.setObjectName(u"gamelist_widget")
+        self.gamelist_widget.setMinimumSize(QSize(262, 0))
         font = QFont()
         font.setPointSize(14)
         self.gamelist_widget.setFont(font)
@@ -94,6 +95,7 @@ class Ui_MainWindow(object):
         self.gamename_label.setFont(font1)
         self.gamename_label.setStyleSheet(u"background-color: rgba(255, 255, 255, 128);")
         self.gamename_label.setScaledContents(False)
+        self.gamename_label.setWordWrap(True)
 
         self.gridLayout_2.addWidget(self.gamename_label, 3, 0, 1, 6)
 
@@ -124,6 +126,7 @@ class Ui_MainWindow(object):
 
         self.total_time_label = QLabel(self.frame)
         self.total_time_label.setObjectName(u"total_time_label")
+        self.total_time_label.setStyleSheet(u"background-color: rgba(255, 255, 255, 128);")
         self.total_time_label.setAlignment(Qt.AlignCenter)
 
         self.gridLayout_2.addWidget(self.total_time_label, 4, 2, 2, 1)
