@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AttributesWwNSLwL.ui'
+## Form generated from reading UI file 'AttributesWqSRwzY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QFrame,
-    QGridLayout, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QTabWidget, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -251,52 +250,16 @@ class Ui_Dialog(object):
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.line_8 = QFrame(self.ncd_tab)
-        self.line_8.setObjectName(u"line_8")
-        self.line_8.setFrameShape(QFrame.HLine)
-        self.line_8.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_3.addWidget(self.line_8, 3, 0, 1, 2)
-
-        self.use_ncd_checkbox = QCheckBox(self.ncd_tab)
-        self.use_ncd_checkbox.setObjectName(u"use_ncd_checkbox")
-
-        self.gridLayout_3.addWidget(self.use_ncd_checkbox, 0, 0, 1, 2)
-
-        self.line_9 = QFrame(self.ncd_tab)
-        self.line_9.setObjectName(u"line_9")
-        self.line_9.setFrameShape(QFrame.HLine)
-        self.line_9.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_3.addWidget(self.line_9, 5, 0, 1, 2)
-
-        self.sync_status_label = QLabel(self.ncd_tab)
-        self.sync_status_label.setObjectName(u"sync_status_label")
-
-        self.gridLayout_3.addWidget(self.sync_status_label, 2, 1, 1, 1)
-
-        self.save_date_label = QLabel(self.ncd_tab)
-        self.save_date_label.setObjectName(u"save_date_label")
-
-        self.gridLayout_3.addWidget(self.save_date_label, 8, 1, 1, 1)
-
-        self.line_10 = QFrame(self.ncd_tab)
-        self.line_10.setObjectName(u"line_10")
-        self.line_10.setFrameShape(QFrame.HLine)
-        self.line_10.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_3.addWidget(self.line_10, 7, 0, 1, 2)
-
         self.sync_savepath_label = QLabel(self.ncd_tab)
         self.sync_savepath_label.setObjectName(u"sync_savepath_label")
         self.sync_savepath_label.setWordWrap(True)
 
         self.gridLayout_3.addWidget(self.sync_savepath_label, 6, 1, 1, 1)
 
-        self.label_5 = QLabel(self.ncd_tab)
-        self.label_5.setObjectName(u"label_5")
+        self.sync_enable_label = QLabel(self.ncd_tab)
+        self.sync_enable_label.setObjectName(u"sync_enable_label")
 
-        self.gridLayout_3.addWidget(self.label_5, 4, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.sync_enable_label, 0, 1, 1, 1)
 
         self.savedata_label = QLabel(self.ncd_tab)
         self.savedata_label.setObjectName(u"savedata_label")
@@ -309,15 +272,12 @@ class Ui_Dialog(object):
 
         self.gridLayout_3.addWidget(self.savedata_label, 4, 1, 1, 1)
 
-        self.label_12 = QLabel(self.ncd_tab)
-        self.label_12.setObjectName(u"label_12")
+        self.line_10 = QFrame(self.ncd_tab)
+        self.line_10.setObjectName(u"line_10")
+        self.line_10.setFrameShape(QFrame.HLine)
+        self.line_10.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout_3.addWidget(self.label_12, 8, 0, 1, 1)
-
-        self.label_14 = QLabel(self.ncd_tab)
-        self.label_14.setObjectName(u"label_14")
-
-        self.gridLayout_3.addWidget(self.label_14, 6, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.line_10, 7, 0, 1, 2)
 
         self.line_5 = QFrame(self.ncd_tab)
         self.line_5.setObjectName(u"line_5")
@@ -326,12 +286,32 @@ class Ui_Dialog(object):
 
         self.gridLayout_3.addWidget(self.line_5, 9, 0, 1, 2)
 
+        self.label_10 = QLabel(self.ncd_tab)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout_3.addWidget(self.label_10, 2, 0, 1, 1)
+
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.gridLayout_3.addItem(self.verticalSpacer_2, 11, 0, 1, 2)
 
+        self.label_11 = QLabel(self.ncd_tab)
+        self.label_11.setObjectName(u"label_11")
+
+        self.gridLayout_3.addWidget(self.label_11, 0, 0, 1, 1)
+
+        self.label_5 = QLabel(self.ncd_tab)
+        self.label_5.setObjectName(u"label_5")
+
+        self.gridLayout_3.addWidget(self.label_5, 4, 0, 1, 1)
+
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.setting_sync_btn = QPushButton(self.ncd_tab)
+        self.setting_sync_btn.setObjectName(u"setting_sync_btn")
+
+        self.horizontalLayout_2.addWidget(self.setting_sync_btn)
+
         self.open_savedata_btn = QPushButton(self.ncd_tab)
         self.open_savedata_btn.setObjectName(u"open_savedata_btn")
 
@@ -345,10 +325,39 @@ class Ui_Dialog(object):
 
         self.gridLayout_3.addLayout(self.horizontalLayout_2, 10, 0, 1, 2)
 
-        self.label_10 = QLabel(self.ncd_tab)
-        self.label_10.setObjectName(u"label_10")
+        self.line_8 = QFrame(self.ncd_tab)
+        self.line_8.setObjectName(u"line_8")
+        self.line_8.setFrameShape(QFrame.HLine)
+        self.line_8.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout_3.addWidget(self.label_10, 2, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.line_8, 3, 0, 1, 2)
+
+        self.label_12 = QLabel(self.ncd_tab)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout_3.addWidget(self.label_12, 8, 0, 1, 1)
+
+        self.sync_status_label = QLabel(self.ncd_tab)
+        self.sync_status_label.setObjectName(u"sync_status_label")
+
+        self.gridLayout_3.addWidget(self.sync_status_label, 2, 1, 1, 1)
+
+        self.save_date_label = QLabel(self.ncd_tab)
+        self.save_date_label.setObjectName(u"save_date_label")
+
+        self.gridLayout_3.addWidget(self.save_date_label, 8, 1, 1, 1)
+
+        self.line_9 = QFrame(self.ncd_tab)
+        self.line_9.setObjectName(u"line_9")
+        self.line_9.setFrameShape(QFrame.HLine)
+        self.line_9.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_3.addWidget(self.line_9, 5, 0, 1, 2)
+
+        self.label_14 = QLabel(self.ncd_tab)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout_3.addWidget(self.label_14, 6, 0, 1, 1)
 
         self.line_11 = QFrame(self.ncd_tab)
         self.line_11.setObjectName(u"line_11")
@@ -428,17 +437,19 @@ class Ui_Dialog(object):
         self.label_6.setText(QCoreApplication.translate("Dialog", u"\u6e38\u620f\u8def\u5f84:", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"\u6e38\u620f\u540d\u79f0:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.norm_tab), QCoreApplication.translate("Dialog", u"\u5e38\u89c4", None))
-        self.use_ncd_checkbox.setText(QCoreApplication.translate("Dialog", u"\u542f\u7528\u5b58\u6863\u4e91\u540c\u6b65", None))
-        self.sync_status_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
-        self.save_date_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
         self.sync_savepath_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
-        self.label_5.setText(QCoreApplication.translate("Dialog", u"\u672c\u5730\u5b58\u6863\u8def\u5f84:", None))
+        self.sync_enable_label.setText(QCoreApplication.translate("Dialog", u"\u672a\u542f\u7528", None))
         self.savedata_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
-        self.label_12.setText(QCoreApplication.translate("Dialog", u"\u4e91\u5b58\u6863\u65e5\u671f:", None))
-        self.label_14.setText(QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65\u8def\u5f84:", None))
+        self.label_10.setText(QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65\u72b6\u6001\uff1a", None))
+        self.label_11.setText(QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65:", None))
+        self.label_5.setText(QCoreApplication.translate("Dialog", u"\u672c\u5730\u5b58\u6863\u8def\u5f84:", None))
+        self.setting_sync_btn.setText(QCoreApplication.translate("Dialog", u"\u542f\u7528\u5b58\u6863\u4e91\u540c\u6b65", None))
         self.open_savedata_btn.setText(QCoreApplication.translate("Dialog", u"\u6253\u5f00\u5b58\u6863\u76ee\u5f55", None))
         self.fix_ncd_btn.setText(QCoreApplication.translate("Dialog", u"\u4fee\u590d\u4e91\u540c\u6b65\u8fde\u63a5", None))
-        self.label_10.setText(QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65\u72b6\u6001\uff1a", None))
+        self.label_12.setText(QCoreApplication.translate("Dialog", u"\u4e91\u5b58\u6863\u65e5\u671f:", None))
+        self.sync_status_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
+        self.save_date_label.setText(QCoreApplication.translate("Dialog", u"N\\A", None))
+        self.label_14.setText(QCoreApplication.translate("Dialog", u"\u4e91\u540c\u6b65\u8def\u5f84:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.ncd_tab), QCoreApplication.translate("Dialog", u"\u5b58\u6863\u4e91\u540c\u6b65", None))
         self.label_9.setText(QCoreApplication.translate("Dialog", u"\u8fd0\u884c\u53c2\u6570:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.adva_tab), QCoreApplication.translate("Dialog", u"\u9ad8\u7ea7", None))

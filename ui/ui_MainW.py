@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWAxMjwU.ui'
+## Form generated from reading UI file 'MainWZptYNP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -94,7 +94,6 @@ class Ui_MainWindow(object):
         font1.setPointSize(36)
         self.gamename_label.setFont(font1)
         self.gamename_label.setStyleSheet(u"background-color: rgba(255, 255, 255, 128);")
-        self.gamename_label.setScaledContents(False)
         self.gamename_label.setWordWrap(True)
 
         self.gridLayout_2.addWidget(self.gamename_label, 3, 0, 1, 6)

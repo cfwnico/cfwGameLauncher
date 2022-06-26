@@ -128,9 +128,6 @@ border-color: rgba(255, 255, 255, 128);</string>
            <property name="text">
             <string>game_name</string>
            </property>
-           <property name="scaledContents">
-            <bool>false</bool>
-           </property>
            <property name="wordWrap">
             <bool>true</bool>
            </property>

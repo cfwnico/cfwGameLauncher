@@ -1,30 +1,31 @@
 # cfw
-# 2022.6.21
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+# 2022.6.26
 import os
 from glob import glob
 from time import localtime, strftime
 
+from PySide6.QtCore import *
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+
 
 def messagebox(parent, icon: QIcon, title: str, text: str, button="yes", buttons=None):
-    """[ 该函数封装一个Qt对话框类方便重复调用 ]
+    """[ 封装一个Qt对话框类方便重复调用 ]
 
     参数:
         parent (QWindow): [ 该对话框的父窗口 ]
         icon (QIcon): [ 该对话框显示的图标 ]
-        图标参数:Warning(惊叹号),Question(问号),Critical(错误)
+        图标参数 (QMessageBox) : [ Warning(惊叹号),Question(问号),Critical(错误),Information(信息) ]
         title (str): [ 该对话框的标题 ]
         text (str): [ 该对话框的内容 ]
         button (str): [ 指定显示的按钮;默认参数为"yes"->只显示确定按钮;"yesno"->显示确定和取消按钮 ]
-        buttons (dict): [ {按钮内容QMessagebox.Role} ]
+        buttons (dict): [ {按钮文字 ：QMessagebox.Role} ]
 
-    返回:int
-        确定返回0,
-        取消返回1,
-        按钮越多返回值根据添加顺序依次类推,
-        关闭返回值和最后一个按钮返回值相同.
+    返回: int
+        确定: [ 0 ]
+        取消: [ 1 ]
+
+        按钮越多返回值根据添加顺序依次+1,关闭按钮的返回值和最后一个按钮返回的值相同.
     """
     if parent is None:
         msgbox = QMessageBox()
@@ -56,7 +57,7 @@ def path_is_symlink(path: str):
     返回:
         True: 是符号链接.
         False: 不是符号链接.
-        None: 该路径不存在;该路径指向一个文件.
+        None: 该路径不存在或者该路径指向一个文件.
     """
     if not os.path.exists(path):
         return None

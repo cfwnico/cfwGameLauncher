@@ -6,13 +6,16 @@
 # add game添加重名冲突分歧
 # scan game同理
 # 实装 运行参数 功能
-# 图标模块
+# 游戏图标模块
 # 寻找在pyqt中可以临时UAC提权的东西
 # metadata爬取,攻略爬取
 # 在线爬取图片模块
+# 缩放图片的算法需要重写
 
 # bug list:
-# 同步对话框点取消后checkbox会变得不正常
+# shutil.copytree路径问题
+
+# tips:
 # noramlpath函数后空字符串会变成"."
 
 
@@ -162,7 +165,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 批量扫描游戏
         # 需要进行重名处理
         scan_game_path = QFileDialog.getExistingDirectory(self, "请选择需要扫描的文件夹...")
-        scan_game_path = os.path.normpath(scan_game_path)
         if scan_game_path == "":
             return
         dir = os.scandir(scan_game_path)
@@ -224,11 +226,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.config_obj, self.game_data_obj, game_name
         )
         attributes_win.exec()
-        # 断开信号连接防止出现信号回环
-        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
         self.update_game_list()
         self.load_game_data()
-        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
 
 
 if __name__ == "__main__":

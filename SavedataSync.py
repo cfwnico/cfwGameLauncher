@@ -3,10 +3,11 @@
 
 import os
 import shutil
-import traceback
+
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
+
 from Common import get_edit_time, path_is_symlink
 
 
@@ -14,7 +15,9 @@ def check_sync_status(local_savepath: str, ncd_savepath: str):
     """[ 该函数检查云同步状态并返回相关结果 ]
 
     参数:
-        path (str): [ 路径 ]
+        local_savepath (str): [ 本地存档文件夹路径 ]
+        ncd_savepath (str): [ 云端存档文件夹路径 ]
+
 
     返回:
         dict:{"status": 云同步状态, "time": 云存档最新修改时间, "ncd_savepath": 云存档路径}.
