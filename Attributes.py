@@ -26,6 +26,19 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.load_game_data()
         self.load_sync_info()
 
+    def check_ncd_path(self, func):
+        # 检查云端存档文件夹路径合法性的装饰器
+        ncd_path = self.config_obj.confdata_dict["ncd_path"]
+
+        def warapper(*args, **kw):
+            if os.path.exists(ncd_path):
+                return func(*args, **kw)
+            else:
+                messagebox(self, QMessageBox.Critical, "错误!", "云端存档文件夹路径错误!")
+                return
+
+        return warapper
+
     def setup_connect(self):
         # 公共按钮
         self.ok_btn.clicked.connect(self.ok_func)

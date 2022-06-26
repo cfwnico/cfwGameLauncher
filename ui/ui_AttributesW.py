@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AttributesWqSRwzY.ui'
+## Form generated from reading UI file 'AttributesWzvFGbC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
