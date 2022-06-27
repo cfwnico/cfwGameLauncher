@@ -198,7 +198,7 @@ class SettingWindow(QDialog, Ui_Dialog):
         game_list = game_data_obj.get_game_list()
         v = 0
         for i in game_list:
-            game_info = game_data_obj.get_game_data(i)
+            game_info = game_data_obj.get_game_info(i)
             src_path = game_info["savedata_path"]
             # 追踪符号链接
             src_path = os.path.normpath(src_path)

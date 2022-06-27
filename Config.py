@@ -32,7 +32,7 @@ class GameData:
             game_list.append(i)
         return game_list
 
-    def get_game_data(self, game_name: str) -> dict:
+    def get_game_info(self, game_name: str) -> dict:
         if game_name in self._gamedata_dict:
             return self._gamedata_dict[game_name]
 

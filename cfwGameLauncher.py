@@ -93,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             key_value = selcet_item.text()
         else:
             key_value = item.text()
-        game_info = self.game_data_obj.get_game_data(key_value)
+        game_info = self.game_data_obj.get_game_info(key_value)
         # 显示游戏译名
         self.game_name = game_info["nick_name"]
         self.gamename_label.setText(self.game_name)
@@ -131,7 +131,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_game(self):
         # 添加游戏
-        # 需要进行重名处理
         game_folder_path = self.config_obj.confdata_dict["user_folder"]
         if os.path.exists(game_folder_path):
             folder = game_folder_path
@@ -140,14 +139,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         game_path = QFileDialog.getExistingDirectory(self, "请选择游戏文件夹...", folder)
         if game_path == "":
             return
-        exe_path = QFileDialog.getOpenFileName(self, "请选择游戏程序文件...", game_path, "*.exe")
-        if exe_path == "":
-            return
         game_name = os.path.basename(game_path)
+        if game_name in self.game_data_obj._gamedata_dict:
+            messagebox(
+                self, QMessageBox.Critical, "错误!", f"该游戏:'{game_name}'已存在!无法重复添加!"
+            )
+            return
+        exe_path = QFileDialog.getOpenFileName(self, "请选择游戏程序文件...", game_path, "*.exe")
+        if exe_path[0] == "":
+            return
         game_info_dict = {
             "nick_name": game_name,
             "game_path": game_path,
-            "exe_path": exe_path,
+            "exe_path": exe_path[0],
             "savedata_path": "N\A",
             "last_time": "N\A",
             "total_time": "N\A",
@@ -157,9 +161,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         }
         self.game_data_obj.create_game(game_name, game_info_dict)
         # 断开信号连接防止出现信号回环
-        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
-        self.load_game()
-        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+        # self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
+        # self.load_game()
+        # self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+        self.update_game_list()
 
     def scan_game(self):
         # 批量扫描游戏

@@ -22,16 +22,16 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.config_obj = config
         self.game_data_obj = game_data
         self.game_name = game_name
+        self.ncd_path = self.config_obj.confdata_dict["ncd_path"]
         self.create_dict()
-        self.load_game_data()
+        self.load_game_info()
         self.load_sync_info()
 
     def check_ncd_path(self, func):
         # 检查云端存档文件夹路径合法性的装饰器
-        ncd_path = self.config_obj.confdata_dict["ncd_path"]
 
         def warapper(*args, **kw):
-            if os.path.exists(ncd_path):
+            if os.path.exists(self.ncd_path):
                 return func(*args, **kw)
             else:
                 messagebox(self, QMessageBox.Critical, "错误!", "云端存档文件夹路径错误!")
@@ -75,9 +75,9 @@ class AttributesWindow(QDialog, Ui_Dialog):
             "time": self.save_date_label,
         }
 
-    def load_game_data(self):
+    def load_game_info(self):
         # 获取游戏信息
-        self.game_info = self.game_data_obj.get_game_data(self.game_name)
+        self.game_info = self.game_data_obj.get_game_info(self.game_name)
         # 显示游戏本名
         self.game_name_label.setText(self.game_name)
         self.game_name_edit.setText(self.game_name)
@@ -93,9 +93,10 @@ class AttributesWindow(QDialog, Ui_Dialog):
             self.sync_enable_label.setText("未启用")
 
     def get_ncd_savepath(self, savedata_path: str):
-        ncd_path = self.config_obj.confdata_dict["ncd_path"]
         save_folder_base_name = os.path.basename(savedata_path)
-        ncd_savepath = os.path.join(ncd_path, self.game_name, save_folder_base_name)
+        ncd_savepath = os.path.join(
+            self.ncd_path, self.game_name, save_folder_base_name
+        )
         return ncd_savepath
 
     def load_sync_info(self):
@@ -172,7 +173,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
             pass
         else:  # 进入创建流程
             self.init_create_sync()
-            self.load_game_data()
+            self.load_game_info()
             self.load_sync_info()
 
     def open_savedata(self):
@@ -207,9 +208,9 @@ class AttributesWindow(QDialog, Ui_Dialog):
         if new_name in self.game_data_obj._gamedata_dict:
             messagebox(self, QMessageBox.Critical, "错误!", "已存在相同名称的游戏!")
             return False
-        old_game_data_dict = self.game_data_obj.get_game_data(old_name)
+        old_game_info = self.game_data_obj.get_game_info(old_name)
         self.game_data_obj.del_game(old_name)
-        self.game_data_obj.create_game(new_name, old_game_data_dict)
+        self.game_data_obj.create_game(new_name, old_game_info)
         # 重命名元数据\攻略文件\背景图片\游戏图标
         src_bg_path = os.path.join("image", old_name + ".jpg")
         dst_bg_path = os.path.join("image", new_name + ".jpg")
@@ -233,9 +234,8 @@ class AttributesWindow(QDialog, Ui_Dialog):
         # 重命名对应的云存档
         if self.game_info["enable_sync"]:
             local_savepath = self.game_info["savedata_path"]
-            ncd_path = self.config_obj.confdata_dict["ncd_path"]
-            old_ncd_gamepath = os.path.join(ncd_path, old_name)
-            new_ncd_gamepath = os.path.join(ncd_path, new_name)
+            old_ncd_gamepath = os.path.join(self.ncd_path, old_name)
+            new_ncd_gamepath = os.path.join(self.ncd_path, new_name)
             if not del_sync(local_savepath, old_ncd_gamepath):
                 messagebox(self, QMessageBox.Critical, "错误!", "重命名云存档时发生错误!")
             if not create_sync(local_savepath, new_ncd_gamepath):
@@ -244,9 +244,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
 
     def init_create_sync(self):
         # 首先检测云端文件夹合法性
-        ncd_path = self.config_obj.confdata_dict["ncd_path"]
-        ncd_path = os.path.normpath(ncd_path)
-        if not os.path.exists(ncd_path):
+        if not os.path.exists(self.ncd_path):
             messagebox(self, QMessageBox.Critical, "错误!", "请检查设置中的云端存档文件夹路径!")
             return
         # 选择游戏存档文件夹
@@ -259,12 +257,12 @@ class AttributesWindow(QDialog, Ui_Dialog):
             local_savepath = local_savepath
             self.savedata_label.setText(local_savepath)
         # 检测存档路径合法性,防止产生回环云存档
-        pre = os.path.commonprefix([ncd_path, local_savepath])
-        if pre == ncd_path:
+        pre = os.path.commonprefix([self.ncd_path, local_savepath])
+        if pre == self.ncd_path:
             messagebox(self, QMessageBox.Critical, "错误!", "本地存档文件夹路径错误!")
             return
         # 获取云端文件夹路径
-        ncd_gamepath = os.path.join(ncd_path, self.game_name)
+        ncd_gamepath = os.path.join(self.ncd_path, self.game_name)
         # 创建符号链接
         result = create_sync(local_savepath, ncd_gamepath)
         if isinstance(result, str):
@@ -287,9 +285,7 @@ class AttributesWindow(QDialog, Ui_Dialog):
         if replay == 1:  # 取消按钮
             return
         local_savepath = self.game_info["savedata_path"]
-        ncd_path = self.config_obj.confdata_dict["ncd_path"]
-        ncd_path = os.path.normpath(ncd_path)
-        ncd_gamepath = os.path.join(ncd_path, self.game_name)
+        ncd_gamepath = os.path.join(self.ncd_path, self.game_name)
         result = del_sync(local_savepath, ncd_gamepath)
         if result:
             self.game_data_obj.save_game_data(self.game_name, "enable_sync", False)
