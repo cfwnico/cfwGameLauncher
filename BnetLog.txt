@@ -1,0 +1,3 @@
+6/28 21:40:30.033  Auto-picking gateway based on GMT
+6/28 21:40:30.033      Find gateway closest to -8.00
+6/28 21:40:30.033      Gateway 3 (asia.battle.net at GMT -9) is closest to -8.00

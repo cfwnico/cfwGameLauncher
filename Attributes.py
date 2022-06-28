@@ -27,18 +27,6 @@ class AttributesWindow(QDialog, Ui_Dialog):
         self.load_game_info()
         self.load_sync_info()
 
-    def check_ncd_path(self, func):
-        # 检查云端存档文件夹路径合法性的装饰器
-
-        def warapper(*args, **kw):
-            if os.path.exists(self.ncd_path):
-                return func(*args, **kw)
-            else:
-                messagebox(self, QMessageBox.Critical, "错误!", "云端存档文件夹路径错误!")
-                return
-
-        return warapper
-
     def setup_connect(self):
         # 公共按钮
         self.ok_btn.clicked.connect(self.ok_func)
@@ -81,6 +69,9 @@ class AttributesWindow(QDialog, Ui_Dialog):
         # 显示游戏本名
         self.game_name_label.setText(self.game_name)
         self.game_name_edit.setText(self.game_name)
+        # 显示游戏图标
+        icon_path = os.path.join("image", self.game_name + "_ico.png")
+        self.icon_label.setPixmap(QPixmap(icon_path))
         # 显示其余信息
         for key1, widget1 in self.labels_dict.items():
             widget1.setText(self.game_info[key1])
@@ -131,7 +122,16 @@ class AttributesWindow(QDialog, Ui_Dialog):
             self.exe_path_edit.setText(new_exe_path)
 
     def change_icon(self):
-        self.game_data_obj.del_game(self.game_name)
+        new_icon_path = QFileDialog.getOpenFileName(
+            self, "请选择游戏图标图片...", filter="图片文件 (*.png *.jpg *.jpeg)"
+        )
+        new_icon_path = new_icon_path[0]
+        if new_icon_path == "":
+            return
+        icon_image = Image.open(new_icon_path)
+        proc_image = icon_image.resize((16, 16))
+        save_path = os.path.join("image", self.game_name + "_icon.png")
+        proc_image.save(save_path)
 
     def change_bg(self):
         # 选择一个图片文件，尝试压缩成1600*900
@@ -159,11 +159,22 @@ class AttributesWindow(QDialog, Ui_Dialog):
         os.startfile(txt_path)
 
     def remove_game(self):
+        replay = messagebox(
+            self,
+            QMessageBox.Warning,
+            "警告",
+            "移除该游戏会同时移除背景图片、游戏图标、游戏攻略、游戏介绍、云同步存档(您不会丢失您的存档)，是否移除?",
+            "yesno",
+        )
+        if replay == 1:
+            return
         self.game_data_obj.del_game(self.game_name)
         # 删除元数据\攻略\背景图片\图标
         bg_path = os.path.join("image", self.game_name + ".jpg")
         metadata_path = os.path.join("metadata", self.game_name + ".txt")
         txt_path = os.path.join("metadata", self.game_name + "_txt.txt")
+        icon_path = os.path.join("image", self.game_name + "_icon.png")
+        # 断开存档云同步
         self.close()
 
     def setting_sync(self):

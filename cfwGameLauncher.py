@@ -1,16 +1,13 @@
 # cfw
-# 2022.6.26
+# 2022.6.28
 
 # ToDo:
 # 添加托盘模块
-# add game添加重名冲突分歧
-# scan game同理
 # 实装 运行参数 功能
-# 游戏图标模块
-# 寻找在pyqt中可以临时UAC提权的东西
-# metadata爬取,攻略爬取
+# metadata爬取,攻略爬取模块
 # 在线爬取图片模块
 # 缩放图片的算法需要重写
+# 云存档管理器
 
 # bug list:
 # shutil.copytree路径问题
@@ -33,6 +30,7 @@ from Common import messagebox
 from Config import Config, GameData
 from Setting import SettingWindow
 from ui.ui_MainW import Ui_MainWindow
+import subprocess
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -41,15 +39,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.config_obj = config
         self.game_data_obj = gamedata
         self.setupUi(self)
-        self.setup_ui()
         self.setup_connect()
-        self.load_game()
-
-    def setup_ui(self):
-        pass
+        self.load_game_list()
 
     def setup_connect(self):
-        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_info)
         self.gamelist_widget.itemDoubleClicked.connect(self.attributes)
         self.add_game_btn.clicked.connect(self.add_game)
         self.scan_game_btn.clicked.connect(self.scan_game)
@@ -57,13 +51,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setting_btn.clicked.connect(self.setting)
         self.playgame_btn.clicked.connect(self.play_game)
 
-    def load_game(self, current_row: int = 0):
+    def load_game_list(self, current_row: int = 0):
         self.gamelist_widget.clear()
         game_list = self.game_data_obj.get_game_list()
         self.cache_game_list = game_list
         for i in game_list:
             item = QListWidgetItem()
             item.setText(i)
+            icon_path = os.path.join("image", i + "_ico.png")
+            if os.path.exists(icon_path):
+                item.setIcon(QPixmap(icon_path))
             self.gamelist_widget.addItem(item)
         self.gamelist_widget.setCurrentRow(current_row)
 
@@ -87,7 +84,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.gamelist_widget.addItem(item)
         self.cache_game_list = game_list
 
-    def load_game_data(self, item: QListWidgetItem = None):
+    def load_game_info(self, item: QListWidgetItem = None):
         if item is None:
             selcet_item = self.gamelist_widget.selectedItems()[0]
             key_value = selcet_item.text()
@@ -100,7 +97,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 设置游戏文件夹路径
         self.game_path = game_info["game_path"]
         # 设置游戏程序路径
-        self.exe_path = game_info["exe_path"]
+        self.exe_path: str = game_info["exe_path"]
         # 设置最后运行日期
         last_run_text = "最后运行日期\n" + game_info["last_time"]
         self.last_run_label.setText(last_run_text)
@@ -128,6 +125,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pale = self.palette()
         pale.setBrush(QPalette.Window, QBrush(QPixmap(bg_path)))
         self.setPalette(pale)
+        # 其他变量获取
+        self.run_args: str = game_info["run_args"]
 
     def add_game(self):
         # 添加游戏
@@ -160,10 +159,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "enable_sync": False,
         }
         self.game_data_obj.create_game(game_name, game_info_dict)
-        # 断开信号连接防止出现信号回环
-        # self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
-        # self.load_game()
-        # self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
         self.update_game_list()
 
     def scan_game(self):
@@ -174,6 +169,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         dir = os.scandir(scan_game_path)
         for i in dir:
+            if i.name in self.game_data_obj._gamedata_dict:
+                continue
             exe_path_list = glob(os.path.join(i.path, "*.exe"))
             if len(exe_path_list) == 1:
                 exe_path = exe_path_list[0]
@@ -192,20 +189,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             }
             self.game_data_obj.create_game(i.name, game_info_dict)
         # 断开信号连接防止出现信号回环
-        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
-        self.load_game()
-        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_info)
+        self.load_game_list()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_info)
 
     def sort_game_list(self):
         self.game_data_obj.sort_game()
-        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_data)
-        self.load_game()
-        self.gamelist_widget.currentItemChanged.connect(self.load_game_data)
+        self.gamelist_widget.currentItemChanged.disconnect(self.load_game_info)
+        self.load_game_list()
+        self.gamelist_widget.currentItemChanged.connect(self.load_game_info)
 
     def play_game(self):
         # 运行游戏
         if os.path.exists(self.exe_path):
-            os.startfile(self.exe_path)
+            # 需要UAC提权
+            subprocess.call([self.exe_path, self.run_args])
             self.edit_last_runtime()
         else:
             messagebox(self, QMessageBox.Critical, "错误！", "未找到游戏文件，请检查该游戏属性！")
@@ -232,7 +230,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         attributes_win.exec()
         self.update_game_list()
-        self.load_game_data()
+        self.load_game_info()
 
 
 if __name__ == "__main__":
